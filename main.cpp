@@ -21,7 +21,8 @@ int main(int argc, char *argv[])
     CRenderer::Init(argc, argv);
     gInterpreter.Parse(R"(
         PushMatrix()        
-        Translate(Altitude, 200)
+        // Translate(Altitude, 200)
+        Translate(0, 200)
         DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 255, 255 )
         PushMatrix()
         Translate(200, 0)        
