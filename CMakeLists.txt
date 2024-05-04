@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.6.0)
 project(sinop VERSION 0.1.0 LANGUAGES C CXX)
 
 set(SOURCES
@@ -7,6 +7,10 @@ set(SOURCES
     Interpreter.cpp
     Renderer.cpp
     Texture.cpp
+    calculator.cpp
+    tokengenerator.cpp
+    rpngenerator.cpp
+    vartable.cpp
 )
 
 set(HEADERS
@@ -15,7 +19,13 @@ set(HEADERS
     Interpreter.h
     Renderer.h
     RenderMath.h
-    Texture.h)
+    Texture.h
+    calculator.h
+    tokengenerator.h
+    rpngenerator.h
+    vartable.h
+    utils.h
+    )
 
 find_package(PNG REQUIRED)
 find_package(OpenGL REQUIRED)
