@@ -120,3 +120,10 @@ void CRenderer::StartRendering()
 {
     glutMainLoop();
 }
+
+void CRenderer::InitSetStart(int argc, char *argv[], const std::function<void(void)>& f)
+{
+    Init(argc, argv);
+    SetRenderFunction(f);
+    StartRendering();
+}

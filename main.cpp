@@ -27,15 +27,26 @@ CFlightSimulator gFlightSimulator;
 void Renderfunction();
 void dialog();
 
+static const bool rpn = true;
+static int  reportlevel = 1;
+
 int main(int argc, char *argv[])
 {
-    string text = "pushm";
+
+    vector<string> source0 = {"pushm()", "trnsm(200,100)", "drawm()", "pushm()", "trnsm(128, 100)"};
+    vector<string> source1 = {"pushm() trnsm(200,100) drawm() pushm() trnsm(128, 100)" };
+    vector<string> source2 = {"trnsm(200,100)"};
+    vector<string> source  = source2;
     VarTable VARIABLES;
     vector<Token> tokenList;
     vector<RPNToken> tokensRPN;
 
-    tokensRPN = makeRPN(text, keywords, VARIABLES, 0);
-    calcandprint(tokensRPN, VARIABLES, 0);
+    if (rpn){
+    for (int i=0; i<source.size(); i++) {
+        tokensRPN = makeRPN(source[i], keywords, VARIABLES, reportlevel); 
+        calcandprint(tokensRPN, VARIABLES, reportlevel);
+        };
+    } else{
 
     gInterpreter.Parse(R"(
         PushMatrix()        
@@ -50,20 +61,34 @@ int main(int argc, char *argv[])
         // DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 0, 0 )
         // PopMatrix()
     )");
+    }
 
     thread dialogThread(dialog);
-    CRenderer::Init(argc, argv);
 
-    CRenderer::SetRenderFunction(Renderfunction);
-    CRenderer::StartRendering();
+    // CRenderer::InitSetStart(argc, argv, Renderfunction);
 
     dialogThread.join();
+   
     return EXIT_SUCCESS;
 }
 
 void Renderfunction()
 {
+    // string sourceLine = "pushm() trnsm() drawm() pushm()";
+    vector<string> source0 = {"pushm()", "trnsm(200,100)", "drawm()", "pushm()", "trnsm(128, 100)"};
+    vector<string> source1 = {"pushm() trnsm(200,100) drawm() pushm() trnsm(128, 100)" };
+    vector<string> source  = source0;
+    VarTable VARIABLES;
+    vector<RPNToken> tokensRPN;
+    // if (rpn){
+    if (false){
+    for (int i=0; i<source.size(); i++) {
+        tokensRPN = makeRPN(source[i], keywords, VARIABLES, 0); 
+        calcandprint(tokensRPN, VARIABLES, reportlevel);
+        };
+    } else
     gInterpreter.Run();
+
 }
 
 void dialog()

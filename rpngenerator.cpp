@@ -267,7 +267,7 @@ void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 
 void expr(Token &tk, TkList tkList, vector<RPNToken> &tokensout)
 {
-    if (isa(tk, {OC::pushm}))
+    if (isa(tk, {OC::pushm, OC::popm, OC::trnsm, OC::drawm}))
         expr14_cmd(tk, tkList, tokensout);
     else if (isa(tk, {OC::VAR}) & (tkList.get(0).precedence == 14))
         expr14_assgn(tk, tkList, tokensout);

@@ -3,6 +3,12 @@
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 
+#include "Interpreter.h"
+#include "Renderer.h"
+#include <png.h>
+#include "Texture.h"
+#include "RenderMath.h"
+
 float pushmatrix(float v1, float v2){
     return v1*v2*1000;
 }
@@ -14,6 +20,10 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel){
     float v1 = 0;
     float v2 = 0;
     int i = 0;
+
+    Rect recta = {0,0,256,196};
+    CTexture adfTex;
+    png_to_gl_texture(&adfTex, "spriteTest.png");
 
     cursor--;
     if (cursor<0) cout << "\n\n !!! ERROR cursor !!!\n";
@@ -40,16 +50,23 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel){
     case OC::COL:   v1  = calc(tokenlist, vartabel);  v2=calc(tokenlist, vartabel);
         res = calc(tokenlist, vartabel)?v2:v1;                                              break;
     case OC::pushm:
-        for (i = 0; i < last.arity; i++) res += calc(tokenlist, vartabel);        // provisional
-        // glPushMatrix();                                                                      
+        // for (i = 0; i < last.arity; i++) res += calc(tokenlist, vartabel);
+        glPushMatrix();
         break;
     case OC::popm:
         res = last.value * 2;
-        break; // provisional                                                                     break;
+        break;
     case OC::trnsm:
-        break; // provisional                                                                  break;
+        // v1 = calc(tokenlist, vartabel);
+        (new SinopTranslateMatrixCommand())->DoOperation();
+        glTranslatef(calc(tokenlist, vartabel), v1, 0);
+        break;
     case OC::drawm:
-        break; // provisional
+        (new SinopDrawImageCommand())->DoOperation();
+        // CRenderer::DrawImage("spriteTest.png", recta, 0xFFFFFFFF);
+        CRenderer::DrawImage(&adfTex, &recta, 0xFFFFFFFF);
+        break;
+
     default:
         break;
     }
@@ -61,7 +78,7 @@ void calcandprint(std::vector<RPNToken> &tokenlist, VarTable &vartabel, bool prt
     cursor = tokenlist.size();
     float result = calc(tokenlist, vartabel);
     {
-        std::cout << "EVALUATION RESULT ==> " << std::to_string(result) << std::endl;
+        // std::cout << "EVALUATION RESULT ==> " << std::to_string(result) << std::endl;
     if (prt)
         vartabel.printVarTable();
         cout << "_______________________________________________________________________________" << std::endl;
