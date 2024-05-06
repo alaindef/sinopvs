@@ -1,5 +1,6 @@
 #include <iostream>
 #include "calculator.h"
+#include "FlightSimulator.h"
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 
@@ -8,6 +9,8 @@
 #include <png.h>
 #include "Texture.h"
 #include "RenderMath.h"
+
+extern CFlightSimulator gFlightSimulator;
 
 float pushmatrix(float v1, float v2){
     return v1*v2*1000;
@@ -20,6 +23,8 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel){
     float v1 = 0;
     float v2 = 0;
     int i = 0;
+
+    float* const ptr = gFlightSimulator.GetAddressOfNamedVariableFloat("Altitude");
 
     Rect recta = {0,0,256,196};
     CTexture adfTex;
@@ -57,9 +62,9 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel){
         res = last.value * 2;
         break;
     case OC::trnsm:
-        // v1 = calc(tokenlist, vartabel);
-        (new SinopTranslateMatrixCommand())->DoOperation();
-        glTranslatef(calc(tokenlist, vartabel), v1, 0);
+        v1 = calc(tokenlist, vartabel);
+        v2 = calc(tokenlist, vartabel);
+        glTranslatef(*ptr, v1, 0);
         break;
     case OC::drawm:
         (new SinopDrawImageCommand())->DoOperation();
@@ -80,7 +85,9 @@ void calcandprint(std::vector<RPNToken> &tokenlist, VarTable &vartabel, bool prt
     {
         // std::cout << "EVALUATION RESULT ==> " << std::to_string(result) << std::endl;
     if (prt)
+    {
         vartabel.printVarTable();
         cout << "_______________________________________________________________________________" << std::endl;
+    }
     }
 }

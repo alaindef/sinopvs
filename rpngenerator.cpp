@@ -261,7 +261,6 @@ void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
     save.arity = arity;
 
     pushToken(save, tokensout);
-    // tk = tkList.pop();
     return;
 }
 

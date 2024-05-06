@@ -10,7 +10,7 @@ struct VarTable
 
     struct VarValue{string name; float value;};
 
-    vector<VarValue> vartab = {{"a", 0},
+    vector<VarValue> vartab = {{"altitude", 0},
                                {"b", 0}};
 
     int getIndex(string name);

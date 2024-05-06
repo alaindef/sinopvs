@@ -28,7 +28,7 @@ void Renderfunction();
 void dialog();
 
 static const bool rpn = true;
-static int  reportlevel = 1;
+static int  reportlevel = 0;
 
 int main(int argc, char *argv[])
 {
@@ -41,10 +41,12 @@ int main(int argc, char *argv[])
     vector<Token> tokenList;
     vector<RPNToken> tokensRPN;
 
+    if (1 == 1){
     if (rpn){
     for (int i=0; i<source.size(); i++) {
         tokensRPN = makeRPN(source[i], keywords, VARIABLES, reportlevel); 
         calcandprint(tokensRPN, VARIABLES, reportlevel);
+        // calc(tokensRPN, VARIABLES);
         };
     } else{
 
@@ -62,10 +64,11 @@ int main(int argc, char *argv[])
         // PopMatrix()
     )");
     }
+    }
 
     thread dialogThread(dialog);
 
-    // CRenderer::InitSetStart(argc, argv, Renderfunction);
+    CRenderer::InitSetStart(argc, argv, Renderfunction);
 
     dialogThread.join();
    
@@ -75,16 +78,16 @@ int main(int argc, char *argv[])
 void Renderfunction()
 {
     // string sourceLine = "pushm() trnsm() drawm() pushm()";
-    vector<string> source0 = {"pushm()", "trnsm(200,100)", "drawm()", "pushm()", "trnsm(128, 100)"};
-    vector<string> source1 = {"pushm() trnsm(200,100) drawm() pushm() trnsm(128, 100)" };
+    vector<string> source0 = {"pushm()", "trnsm(300,300)", "drawm()", "pushm()"};
+    vector<string> source1 = {"pushm() trnsm(200,100) drawm() pushm() " };
     vector<string> source  = source0;
     VarTable VARIABLES;
     vector<RPNToken> tokensRPN;
-    // if (rpn){
-    if (false){
+    if (rpn){
     for (int i=0; i<source.size(); i++) {
         tokensRPN = makeRPN(source[i], keywords, VARIABLES, 0); 
-        calcandprint(tokensRPN, VARIABLES, reportlevel);
+        calcandprint(tokensRPN, VARIABLES, false);
+        // calc(tokensRPN, VARIABLES);
         };
     } else
     gInterpreter.Run();
