@@ -16,7 +16,7 @@ float pushmatrix(float v1, float v2){
     return v1*v2*1000;
 }
 
-float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel){
+float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     if (tokenlist.size() == 0) return 0.f;
 
     float res = 0;
@@ -38,22 +38,22 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel){
     switch (last.opcode) {
     case OC::NUM:   res = last.value;                                                       break;
     case OC::VAR:   res = vartabel.getValue((int)last.value);                               break;
-    case OC::MUL:   res = calc(tokenlist, vartabel) * calc(tokenlist, vartabel);            break;
-    case OC::DIV:   v1  = calc(tokenlist, vartabel);  res = calc(tokenlist, vartabel)/v1;   break;
-    case OC::ADD:   res = calc(tokenlist, vartabel) + calc(tokenlist, vartabel);            break;
-    case OC::SUB:   v1  = calc(tokenlist, vartabel);  res = calc(tokenlist, vartabel) - v1; break;
-    case OC::PAS:   res = calc(tokenlist, vartabel);                                        break;
-    case OC::CHS:   res = -calc(tokenlist, vartabel);                                       break;
-    case OC::LT:    res = calc(tokenlist, vartabel)   >  calc(tokenlist, vartabel);         break;
-    case OC::LE:    res = calc(tokenlist, vartabel)   >= calc(tokenlist, vartabel);         break;
-    case OC::GT:    res = calc(tokenlist, vartabel)   <  calc(tokenlist, vartabel);         break;
-    case OC::GE:    res = calc(tokenlist, vartabel)   <= calc(tokenlist, vartabel);         break;
-    case OC::EQ:    res = calc(tokenlist, vartabel)   == calc(tokenlist, vartabel);         break;
-    case OC::NE:    res = calc(tokenlist, vartabel)   != calc(tokenlist, vartabel);         break;
-    case OC::ASS:   res = calc(tokenlist, vartabel);
+    case OC::MUL:   res = calc(tokenlist, vartabel, cursor) * calc(tokenlist, vartabel, cursor);            break;
+    case OC::DIV:   v1  = calc(tokenlist, vartabel, cursor);  res = calc(tokenlist, vartabel, cursor)/v1;   break;
+    case OC::ADD:   res = calc(tokenlist, vartabel, cursor) + calc(tokenlist, vartabel, cursor);            break;
+    case OC::SUB:   v1  = calc(tokenlist, vartabel, cursor);  res = calc(tokenlist, vartabel, cursor) - v1; break;
+    case OC::PAS:   res = calc(tokenlist, vartabel, cursor);                                        break;
+    case OC::CHS:   res = -calc(tokenlist, vartabel, cursor);                                       break;
+    case OC::LT:    res = calc(tokenlist, vartabel, cursor)   >  calc(tokenlist, vartabel, cursor);         break;
+    case OC::LE:    res = calc(tokenlist, vartabel, cursor)   >= calc(tokenlist, vartabel, cursor);         break;
+    case OC::GT:    res = calc(tokenlist, vartabel, cursor)   <  calc(tokenlist, vartabel, cursor);         break;
+    case OC::GE:    res = calc(tokenlist, vartabel, cursor)   <= calc(tokenlist, vartabel, cursor);         break;
+    case OC::EQ:    res = calc(tokenlist, vartabel, cursor)   == calc(tokenlist, vartabel, cursor);         break;
+    case OC::NE:    res = calc(tokenlist, vartabel, cursor)   != calc(tokenlist, vartabel, cursor);         break;
+    case OC::ASS:   res = calc(tokenlist, vartabel, cursor);
         vartabel.setVar(tokenlist[cursor-1].value, res); cursor--;                          break;
-    case OC::COL:   v1  = calc(tokenlist, vartabel);  v2=calc(tokenlist, vartabel);
-        res = calc(tokenlist, vartabel)?v2:v1;                                              break;
+    case OC::COL:   v1  = calc(tokenlist, vartabel, cursor);  v2=calc(tokenlist, vartabel, cursor);
+        res = calc(tokenlist, vartabel, cursor)?v2:v1;                                              break;
     case OC::pushm:
         // for (i = 0; i < last.arity; i++) res += calc(tokenlist, vartabel);
         glPushMatrix();
@@ -62,8 +62,8 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel){
         res = last.value * 2;
         break;
     case OC::trnsm:
-        v1 = calc(tokenlist, vartabel);
-        v2 = calc(tokenlist, vartabel);
+        v1 = calc(tokenlist, vartabel, cursor);
+        v2 = calc(tokenlist, vartabel, cursor);
         glTranslatef(*ptr, v1, 0);
         break;
     case OC::drawm:
@@ -80,8 +80,8 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel){
 
 void calcandprint(std::vector<RPNToken> &tokenlist, VarTable &vartabel, bool prt)
 {
-    cursor = tokenlist.size();
-    float result = calc(tokenlist, vartabel);
+    int cursor = tokenlist.size();
+    float result = calc(tokenlist, vartabel, cursor);
     {
         // std::cout << "EVALUATION RESULT ==> " << std::to_string(result) << std::endl;
     if (prt)
