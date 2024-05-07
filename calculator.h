@@ -4,6 +4,7 @@
 #include <functional>
 #include "rpngenerator.h"
 
+
     void calcandprint(std::vector<RPNToken> &tokenlist, VarTable& vartabel, bool prt);
 
 #endif // CALCULATOR_H

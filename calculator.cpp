@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory> 
 #include "calculator.h"
 #include "FlightSimulator.h"
 #include <GL/gl.h>
@@ -12,6 +13,8 @@
 
 extern CFlightSimulator gFlightSimulator;
 
+static SinopDrawImageCommand *sdic = (new SinopDrawImageCommand);
+
 float pushmatrix(float v1, float v2){
     return v1*v2*1000;
 }
@@ -24,8 +27,7 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     float v2 = 0;
     int i = 0;
 
-    float* const ptr = gFlightSimulator.GetAddressOfNamedVariableFloat("Altitude");
-
+    float* ptr;
     Rect recta = {0,0,256,196};
     CTexture adfTex;
     png_to_gl_texture(&adfTex, "spriteTest.png");
@@ -33,6 +35,8 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     cursor--;
     if (cursor<0) cout << "\n\n !!! ERROR cursor !!!\n";
     RPNToken last = tokenlist[cursor];
+
+    // cout << "last.opcode= " << (int) last.opcode << endl;
 
     //remember that operands will be eaten in reverse order
     switch (last.opcode) {
@@ -64,10 +68,14 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     case OC::trnsm:
         v1 = calc(tokenlist, vartabel, cursor);
         v2 = calc(tokenlist, vartabel, cursor);
-        glTranslatef(*ptr, v1, 0);
+
+        // ptr = gFlightSimulator.GetAddressOfNamedVariableFloat("Altitude");
+
+        glTranslatef(v1, v2, 0);
+
         break;
     case OC::drawm:
-        (new SinopDrawImageCommand())->DoOperation();
+        sdic->DoOperation();
         // CRenderer::DrawImage("spriteTest.png", recta, 0xFFFFFFFF);
         CRenderer::DrawImage(&adfTex, &recta, 0xFFFFFFFF);
         break;
@@ -78,10 +86,14 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     return res;
 }
 
+static int cnt = 0;
+
 void calcandprint(std::vector<RPNToken> &tokenlist, VarTable &vartabel, bool prt)
 {
+    cnt = 0;
     int cursor = tokenlist.size();
     float result = calc(tokenlist, vartabel, cursor);
+    // cout << "result -----------------------> cnt " << cnt++ << " crs " << cursor << " " << result << endl;
     {
         // std::cout << "EVALUATION RESULT ==> " << std::to_string(result) << std::endl;
     if (prt)

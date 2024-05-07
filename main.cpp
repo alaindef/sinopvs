@@ -27,29 +27,42 @@ CFlightSimulator gFlightSimulator;
 void Renderfunction();
 void dialog();
 
-static const bool rpn = true;
-static int  reportlevel = 0;
+const static int render   = 1;
+const static int rpn      = 2;
+const static int gInt     = 4;
 
-int main(int argc, char *argv[])
-{
+static int cf      = 
+    rpn 
+    // + gInt
+    + render
+    ; 
+static int  reportlevel = 1;
 
-    vector<string> source0 = {"pushm()", "trnsm(200,100)", "drawm()", "pushm()", "trnsm(128, 100)"};
-    vector<string> source1 = {"pushm() trnsm(200,100) drawm() pushm() trnsm(128, 100)" };
-    vector<string> source2 = {"trnsm(200,100)"};
-    vector<string> source  = source2;
     VarTable VARIABLES;
     vector<Token> tokenList;
     vector<RPNToken> tokensRPN;
+    vector<vector<RPNToken>> program;
 
-    if (1 == 1){
-    if (rpn){
-    for (int i=0; i<source.size(); i++) {
-        tokensRPN = makeRPN(source[i], keywords, VARIABLES, reportlevel); 
-        calcandprint(tokensRPN, VARIABLES, reportlevel);
-        // calc(tokensRPN, VARIABLES);
+int main(int argc, char *argv[])
+{
+    vector<string> source0 = {
+        "newA=Altitude",
+        "newB=newA",
+        "pushm()", 
+        "trnsm(newB, Altitude)", 
+        "drawm()"};                //20 22 23
+    vector<string> source1 = {"pushm()    trnsm(200 , Altitude)   drawm()  " };
+    vector<string> source3 = {"5 + b"};
+    vector<string> source  = source0;
+    if (cf & rpn) {
+    for (int i = 0; i < source.size(); i++) {
+        program.push_back(makeRPN(source[i], keywords, VARIABLES, reportlevel)); 
+        calcandprint(program[i], VARIABLES, reportlevel);
         };
-    } else{
-
+    } 
+    
+    if (cf & gInt)
+    {
     gInterpreter.Parse(R"(
         PushMatrix()        
         // Translate(Altitude, 200)
@@ -64,11 +77,10 @@ int main(int argc, char *argv[])
         // PopMatrix()
     )");
     }
-    }
 
     thread dialogThread(dialog);
 
-    CRenderer::InitSetStart(argc, argv, Renderfunction);
+    if (cf & render)   CRenderer::InitSetStart(argc, argv, Renderfunction);
 
     dialogThread.join();
    
@@ -78,16 +90,15 @@ int main(int argc, char *argv[])
 void Renderfunction()
 {
     // string sourceLine = "pushm() trnsm() drawm() pushm()";
-    vector<string> source0 = {"pushm()", "trnsm(300,300)", "drawm()", "pushm()"};
-    vector<string> source1 = {"pushm() trnsm(200,100) drawm() pushm() " };
-    vector<string> source  = source0;
+    // vector<string> source0 = {"pushm()", "trnsm(Altitude, Altitude)", "drawm()", "pushm()"};
+    // vector<string> source1 = {"pushm()    drawm() trnsm(200     , Altitude)       pushm() " };
+    // vector<string> source  = source1;
     VarTable VARIABLES;
     vector<RPNToken> tokensRPN;
-    if (rpn){
-    for (int i=0; i<source.size(); i++) {
-        tokensRPN = makeRPN(source[i], keywords, VARIABLES, 0); 
-        calcandprint(tokensRPN, VARIABLES, false);
-        // calc(tokensRPN, VARIABLES);
+    if (cf & rpn){
+    for (int i = 0; i < program.size(); i++) {
+        // tokensRPN = makeRPN(source[i], keywords, VARIABLES, 0); 
+        calcandprint(program[i], VARIABLES, true);
         };
     } else
     gInterpreter.Run();

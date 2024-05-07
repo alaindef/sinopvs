@@ -7,11 +7,11 @@ using namespace std;
 
 struct VarTable
 {
-
     struct VarValue{string name; float value;};
 
-    vector<VarValue> vartab = {{"altitude", 0},
-                               {"b", 0}};
+    vector<VarValue> vartab = {{"Altitude", 300},
+                                {"a", -10},
+                               {"b", 10}};
 
     int getIndex(string name);
     // look for name in the table and return the storage index

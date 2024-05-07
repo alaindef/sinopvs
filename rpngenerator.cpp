@@ -219,7 +219,7 @@ void expr13_tst(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 
 void expr14_assgn(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 {
-    Token save = tkList.get(0);
+    Token save = tkList.get(0);             // this should be ASS ["="]    -- todo check
     pushToken(tk, tokensout);
     tk = tkList.pop();
     tk = tkList.pop();
@@ -261,11 +261,13 @@ void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
     save.arity = arity;
 
     pushToken(save, tokensout);
+    expr(tk,tkList, tokensout);
     return;
 }
 
 void expr(Token &tk, TkList tkList, vector<RPNToken> &tokensout)
 {
+    if (isa(tk, {OC::NIL})) return;
     if (isa(tk, {OC::pushm, OC::popm, OC::trnsm, OC::drawm}))
         expr14_cmd(tk, tkList, tokensout);
     else if (isa(tk, {OC::VAR}) & (tkList.get(0).precedence == 14))
