@@ -7,10 +7,16 @@ using namespace std;
 
 struct VarTable
 {
-    struct VarValue{string name; float value;};
+    struct VarValue
+    {
+        string name;
+        float value;
+    };
 
     vector<VarValue> vartab = {{"Altitude", 300},
-                                {"a", -10},
+                               {"EngineRPM", 0},
+                               {"FlapPosition", 0},
+                               {"a", -10},
                                {"b", 10}};
 
     int getIndex(string name);

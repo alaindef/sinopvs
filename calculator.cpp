@@ -35,9 +35,6 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     cursor--;
     if (cursor<0) cout << "\n\n !!! ERROR cursor !!!\n";
     RPNToken last = tokenlist[cursor];
-
-    // cout << "last.opcode= " << (int) last.opcode << endl;
-
     //remember that operands will be eaten in reverse order
     switch (last.opcode) {
     case OC::NUM:   res = last.value;                                                       break;
@@ -59,7 +56,6 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     case OC::COL:   v1  = calc(tokenlist, vartabel, cursor);  v2=calc(tokenlist, vartabel, cursor);
         res = calc(tokenlist, vartabel, cursor)?v2:v1;                                              break;
     case OC::pushm:
-        // for (i = 0; i < last.arity; i++) res += calc(tokenlist, vartabel);
         glPushMatrix();
         break;
     case OC::popm:
@@ -68,15 +64,11 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     case OC::trnsm:
         v1 = calc(tokenlist, vartabel, cursor);
         v2 = calc(tokenlist, vartabel, cursor);
-
-        // ptr = gFlightSimulator.GetAddressOfNamedVariableFloat("Altitude");
-
         glTranslatef(v1, v2, 0);
 
         break;
     case OC::drawm:
         sdic->DoOperation();
-        // CRenderer::DrawImage("spriteTest.png", recta, 0xFFFFFFFF);
         CRenderer::DrawImage(&adfTex, &recta, 0xFFFFFFFF);
         break;
 
@@ -86,20 +78,19 @@ float calc(std::vector<RPNToken>& tokenlist, VarTable& vartabel, int & cursor){
     return res;
 }
 
-static int cnt = 0;
-
 void calcandprint(std::vector<RPNToken> &tokenlist, VarTable &vartabel, bool prt)
 {
-    cnt = 0;
     int cursor = tokenlist.size();
     float result = calc(tokenlist, vartabel, cursor);
-    // cout << "result -----------------------> cnt " << cnt++ << " crs " << cursor << " " << result << endl;
-    {
-        // std::cout << "EVALUATION RESULT ==> " << std::to_string(result) << std::endl;
-    if (prt)
-    {
-        vartabel.printVarTable();
-        cout << "_______________________________________________________________________________" << std::endl;
-    }
-    }
 }
+
+
+
+
+
+
+    // if (prt)
+    // {
+    //     vartabel.printVarTable();
+    //     cout << "_______________________________________________________________________________" << std::endl;
+    // }

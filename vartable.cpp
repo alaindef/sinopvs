@@ -19,7 +19,7 @@ int VarTable::getIndex(string name)
 float VarTable::getValue(int index)
 {
     float val;
-    if (index < 2)
+    if (index < 3)
         val = *gFlightSimulator.GetAddressOfNamedVariableFloat(vartab[index].name);
     else
         val = vartab[index].value;
@@ -51,6 +51,9 @@ void VarTable::printVarTable()
         cout << element.name << "\t";
     cout << "\nvar:   ";
     for (const auto &element : vartab)
-        cout << element.value << "\t";
+    {
+        printf("%.2f\t", element.value);
+        // cout << element.value << "\t";
+    }
     cout << endl;
 }

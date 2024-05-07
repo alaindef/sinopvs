@@ -27,6 +27,7 @@ CFlightSimulator gFlightSimulator;
 void Renderfunction();
 void dialog();
 
+// control what parts will be executed
 const static int render   = 1;
 const static int rpn      = 2;
 const static int gInt     = 4;
@@ -36,8 +37,9 @@ static int cf      =
     // + gInt
     + render
     ; 
-static int  reportlevel = 1;
+static int  reportlevel = 0;
 
+// provisional globals
     VarTable VARIABLES;
     vector<Token> tokenList;
     vector<RPNToken> tokensRPN;
@@ -46,14 +48,18 @@ static int  reportlevel = 1;
 int main(int argc, char *argv[])
 {
     vector<string> source0 = {
-        "newA=Altitude",
-        "newB=newA",
-        "pushm()", 
-        "trnsm(newB, Altitude)", 
-        "drawm()"};                //20 22 23
-    vector<string> source1 = {"pushm()    trnsm(200 , Altitude)   drawm()  " };
-    vector<string> source3 = {"5 + b"};
-    vector<string> source  = source0;
+        "newA=Altitude > 100 ? 100 : Altitude",
+        "newB=Altitude > 100 ? Altitude : 100",
+        "pushm()",
+        "trnsm(newA, newB)",
+        "drawm()"};                           // opcodes pushm=20 trnsm=22 drwam=23
+    vector<string> source1 = {
+        "newA=EngineRPM",
+        "newB=Altitude > 100 ? Altitude : 0",
+        "pushm()",
+        "trnsm(neweA, newB)",
+        "drawm()"};                    
+    vector<string> source = source0;
     if (cf & rpn) {
     for (int i = 0; i < source.size(); i++) {
         program.push_back(makeRPN(source[i], keywords, VARIABLES, reportlevel)); 
@@ -89,20 +95,15 @@ int main(int argc, char *argv[])
 
 void Renderfunction()
 {
-    // string sourceLine = "pushm() trnsm() drawm() pushm()";
-    // vector<string> source0 = {"pushm()", "trnsm(Altitude, Altitude)", "drawm()", "pushm()"};
-    // vector<string> source1 = {"pushm()    drawm() trnsm(200     , Altitude)       pushm() " };
-    // vector<string> source  = source1;
-    VarTable VARIABLES;
-    vector<RPNToken> tokensRPN;
-    if (cf & rpn){
-    for (int i = 0; i < program.size(); i++) {
-        // tokensRPN = makeRPN(source[i], keywords, VARIABLES, 0); 
-        calcandprint(program[i], VARIABLES, true);
+    if (cf & rpn)
+    {
+        for (int i = 0; i < program.size(); i++)
+        {
+            calcandprint(program[i], VARIABLES, false);
         };
-    } else
-    gInterpreter.Run();
-
+    }
+    else
+        gInterpreter.Run();
 }
 
 void dialog()
