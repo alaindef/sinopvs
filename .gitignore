@@ -2,6 +2,7 @@
 
 #custom ADF
 files*.conf
+*.save
 
 #build directories
 [Bb]uild*\

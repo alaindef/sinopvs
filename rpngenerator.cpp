@@ -47,10 +47,16 @@ bool isa(const Token &token, const vector<OC> &allowedTypes)
     return true;
 }
 
+bool isFUNCTION(const Token &token)
+{
+    //    check if the token is a function call or command
+    return (token.opcode > OC::FIRSTFUN);
+}
+
 bool precedenceIs2(TkList tkList)
 {
     // do not test for NUM VAR or Function
-    if (tkList.get(0).precedence == 0)
+    if (tkList.get(-1).precedence == 0)
         return false;
     // the current operator is "+" or "-".
     // we check if it is a binary operator (arity 2, precedence 1) or a unary op (arity 1, precedence 2)
@@ -219,7 +225,8 @@ void expr13_tst(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 
 void expr14_assgn(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 {
-    Token save = tkList.get(0);             // this should be ASS ["="]    -- todo check
+    Token save = tkList.get(0); // this should be ASS ["="]
+    tk.opcode = OC::NUM;        // the token before "=" is now a NUM. its value will be used to access the vartable
     pushToken(tk, tokensout);
     tk = tkList.pop();
     tk = tkList.pop();
@@ -227,12 +234,12 @@ void expr14_assgn(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
     pushToken(save, tokensout);
 }
 
-int params(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
+int params0(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 {
     if (tk.opcode == OC::COMMA)
     {
         tk = tkList.pop();
-        return params(tk, tkList, tokensout);
+        return params0(tk, tkList, tokensout);
     }
     else if (tk.opcode == OC::PAR_R)
     {
@@ -243,12 +250,31 @@ int params(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
     {
         pushToken(tk, tokensout);
         tk = tkList.pop();
-        return (1 + params(tk, tkList, tokensout));
+        return (1 + params0(tk, tkList, tokensout));
     }
 }
 
+int params(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
+{
+    if (tk.opcode == OC::PAR_R)
+    {
+        tk = tkList.pop();
+        if (tokensout.size() > 0)
+            return 1;
+        else
+            return 0; // no COMMA means zero params, 1 COMMA means 2 PARAMS, 2 COMA's means 3 PARAMS
+    }
+    if (tk.opcode == OC::COMMA)
+    {
+        tk = tkList.pop();
+        return (1 + params(tk, tkList, tokensout));
+    }
+    expr13_tst(tk, tkList, tokensout);
+    return params(tk, tkList, tokensout);
+}
+
 void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
-{    
+{
     Token save = tkList.get(-1);
     tk = nextToken(tkList);
     int arity = 0;
@@ -257,18 +283,17 @@ void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
         tk = tkList.pop();
         arity = params(tk, tkList, tokensout);
     }
-
     save.arity = arity;
-
     pushToken(save, tokensout);
-    expr(tk,tkList, tokensout);
+    expr(tk, tkList, tokensout);
     return;
 }
 
 void expr(Token &tk, TkList tkList, vector<RPNToken> &tokensout)
 {
-    if (isa(tk, {OC::NIL})) return;
-    if (isa(tk, {OC::pushm, OC::popm, OC::trnsm, OC::drawm}))
+    if (isa(tk, {OC::NIL}))
+        return;
+    if (isFUNCTION(tk))
         expr14_cmd(tk, tkList, tokensout);
     else if (isa(tk, {OC::VAR}) & (tkList.get(0).precedence == 14))
         expr14_assgn(tk, tkList, tokensout);

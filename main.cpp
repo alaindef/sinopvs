@@ -37,7 +37,7 @@ static int cf      =
     // + gInt
     + render
     ; 
-static int  reportlevel = 0;
+static int  reportlevel = 1;
 
 // provisional globals
     VarTable VARIABLES;
@@ -47,6 +47,8 @@ static int  reportlevel = 0;
 
 int main(int argc, char *argv[])
 {
+    vector<string> source00 = {
+        "dd=44"};    
     vector<string> source0 = {
         "newA=Altitude > 100 ? 100 : Altitude",
         "newB=Altitude > 100 ? Altitude : 100",
@@ -57,7 +59,7 @@ int main(int argc, char *argv[])
         "newA=EngineRPM",
         "newB=Altitude > 100 ? Altitude : 0",
         "pushm()",
-        "trnsm(neweA, newB)",
+        "trnsm(newA, newB)",
         "drawm()"};                    
     vector<string> source = source0;
     if (cf & rpn) {
