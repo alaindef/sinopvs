@@ -37,7 +37,7 @@ static int cf      =
     // + gInt
     + render
     ; 
-static int  reportlevel = 1;
+static int  reportlevel = 0;
 
 // provisional globals
     VarTable VARIABLES;
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
         "newB=Altitude > 100 ? Altitude : 100",
         "pushm()",
         "trnsm(newA, newB)",
-        "drawm()"};                           // opcodes pushm=20 trnsm=22 drwam=23
+        "drawm(spriteTest.png, 0, 0, Altitude, 128)"};                           // opcodes pushm=20 trnsm=22 drwam=23
     vector<string> source1 = {
         "newA=EngineRPM",
         "newB=Altitude > 100 ? Altitude : 0",
@@ -73,16 +73,15 @@ int main(int argc, char *argv[])
     {
     gInterpreter.Parse(R"(
         PushMatrix()        
-        // Translate(Altitude, 200)
-        Translate(200, Altitude)
+        Translate(Altitude, 200)
         DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 255, 255 )
         PushMatrix()
         Translate(128, 100)        
-        // DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 0, 0, 255 )     
-        // PopMatrix()
-        // Translate(0, 200)
-        // DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 0, 0 )
-        // PopMatrix()
+        DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 0, 0, 255 )     
+        PopMatrix()
+        Translate(0, 200)
+        DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 0, 0 )
+        PopMatrix()
     )");
     }
 
@@ -126,16 +125,16 @@ void dialog()
             if (choice == 2){
                 gInterpreter.Parse(R"(
                     PushMatrix()        
-                    // Translate(Altitude, 200)
-                    Translate(200, Altitude)
+                    Translate(Altitude, 200)
+                    // Translate(200, Altitude)
                     DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 255, 255 )
                     PushMatrix()
-                    // Translate(128, 100)        
-                    // DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 0, 0, 255 )     
-                    // PopMatrix()
-                    // Translate(0, 200)
-                    // DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 0, 0 )
-                    // PopMatrix()
+                    Translate(128, 100)        
+                    DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 0, 0, 255 )     
+                    PopMatrix()
+                    Translate(0, 200)
+                    DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 0, 0 )
+                    PopMatrix()
                 )");
             }
             else if (choice == 0) 

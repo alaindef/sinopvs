@@ -234,43 +234,20 @@ void expr14_assgn(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
     pushToken(save, tokensout);
 }
 
-int params0(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
-{
-    if (tk.opcode == OC::COMMA)
-    {
-        tk = tkList.pop();
-        return params0(tk, tkList, tokensout);
-    }
-    else if (tk.opcode == OC::PAR_R)
-    {
-        tk = tkList.pop();
-        return 0;
-    }
-    else
-    {
-        pushToken(tk, tokensout);
-        tk = tkList.pop();
-        return (1 + params0(tk, tkList, tokensout));
-    }
-}
-
 int params(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 {
     if (tk.opcode == OC::PAR_R)
     {
         tk = tkList.pop();
-        if (tokensout.size() > 0)
-            return 1;
-        else
-            return 0; // no COMMA means zero params, 1 COMMA means 2 PARAMS, 2 COMA's means 3 PARAMS
+        return 0;
     }
     if (tk.opcode == OC::COMMA)
     {
         tk = tkList.pop();
-        return (1 + params(tk, tkList, tokensout));
+        return (params(tk, tkList, tokensout));
     }
     expr13_tst(tk, tkList, tokensout);
-    return params(tk, tkList, tokensout);
+    return (1 + params(tk, tkList, tokensout));
 }
 
 void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)

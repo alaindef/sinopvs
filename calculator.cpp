@@ -13,8 +13,6 @@
 
 extern CFlightSimulator gFlightSimulator;
 
-static SinopDrawImageCommand *sdic = (new SinopDrawImageCommand);
-
 float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
 {
     if (tokenlist.size() == 0)
@@ -25,7 +23,6 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
     float res = 0;
     float param[9];
     float p[10]; // parameters of an operator
-    float *ptr;
 
     cursor = 0;
     int pnr;
@@ -120,7 +117,7 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
             glTranslatef(p[1], p[2], 0);
             break;
         case OC::drawm:
-            sdic->DoOperation();
+            recta = {p[2], p[3], p[4], p[5]};
             CRenderer::DrawImage(&adfTex, &recta, 0xFFFFFFFF);
             break;
 
