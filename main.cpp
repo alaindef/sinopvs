@@ -50,17 +50,28 @@ int main(int argc, char *argv[])
     vector<string> source00 = {
         "dd=44"};    
     vector<string> source0 = {
+        "newA = Altitude < 100 ? 0 : (Altitude - 100) * 3",
+        "newB = Altitude < 100 ? Altitude : 100",
+        "pushm()", 
+        "trnsm(200, 100)",
+        "sizeX = Altitude < 100 ? Altitude*2 : 200",
+        "drawm(2, 0, 0, sizeX*0.6 , 128)"
+        "pushm()",
+        "trnsm(newA*1.5 - 128 , newB * 1.5)",
+        "drawm(1, 0, 0, 128, 128)",
+        "popm"
+        };                         
+    vector<string> source1 ={
         "newA=Altitude > 100 ? 100 : Altitude",
         "newB=Altitude > 100 ? Altitude : 100",
-        "pushm()",
+        "pushm()", 
         "trnsm(newA, newB)",
-        "drawm(spriteTest.png, 0, 0, Altitude, 128)"};                           // opcodes pushm=20 trnsm=22 drwam=23
-    vector<string> source1 = {
-        "newA=EngineRPM",
-        "newB=Altitude > 100 ? Altitude : 0",
+        "drawm(0, 0, 0, Altitude, 128)"
         "pushm()",
-        "trnsm(newA, newB)",
-        "drawm()"};                    
+        "trnsm(200, 200)",
+        "drawm(1, 0, 0, Altitude, 128)",
+        "popm"
+        };                             
     vector<string> source = source0;
     if (cf & rpn) {
     for (int i = 0; i < source.size(); i++) {
@@ -87,10 +98,13 @@ int main(int argc, char *argv[])
 
     thread dialogThread(dialog);
 
-    if (cf & render)   CRenderer::InitSetStart(argc, argv, Renderfunction);
+    if (cf & render)
+    {
+        CRenderer::InitSetStart(argc, argv, Renderfunction);
+    }
 
     dialogThread.join();
-   
+
     return EXIT_SUCCESS;
 }
 
@@ -98,6 +112,9 @@ void Renderfunction()
 {
     if (cf & rpn)
     {
+
+        for (int i=0; i< sizeof( VARIABLES.pings) ; i++)
+            png_to_gl_texture(&VARIABLES.tex[i], (VARIABLES.pings[i]).c_str());
         for (int i = 0; i < program.size(); i++)
         {
             calcandprint(program[i], VARIABLES, false);

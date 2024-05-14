@@ -2,6 +2,7 @@
 #define VARTABLE_H
 #include <string>
 #include <vector>
+#include "Renderer.h"
 
 using namespace std;
 
@@ -33,6 +34,10 @@ struct VarTable
     // returns index
 
     void printVarTable();
+
+    string pings[4] = {"adfscrambled8.png", "spriteTest.png", "nin.png", "krokus.png"};
+
+    CTexture tex[4];
 };
 
 #endif // VARTABLE_H

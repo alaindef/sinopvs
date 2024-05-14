@@ -112,13 +112,15 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
             glPushMatrix();
             break;
         case OC::popm:
+            glPopMatrix();
             break;
         case OC::trnsm:
             glTranslatef(p[1], p[2], 0);
             break;
         case OC::drawm:
+            // png_to_gl_texture(&adfTex, vartabel.pings[(int)p[1]].c_str());
             recta = {p[2], p[3], p[4], p[5]};
-            CRenderer::DrawImage(&adfTex, &recta, 0xFFFFFFFF);
+            CRenderer::DrawImage(&vartabel.tex[(int)p[1]], &recta, 0xFFFFFFFF);
             break;
 
         default:
