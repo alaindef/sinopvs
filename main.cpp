@@ -31,13 +31,13 @@ void dialog();
 const static int render   = 1;
 const static int rpn      = 2;
 const static int gInt     = 4;
-
+// comment out what you do not want to see
 static int cf      = 
     rpn 
     // + gInt
     + render
     ; 
-static int  reportlevel = 0;
+static int  reportlevel = 0;        // >0 means that tokengen and RPNgen output will be printed
 
 // provisional globals
     VarTable VARIABLES;
@@ -47,9 +47,9 @@ static int  reportlevel = 0;
 
 int main(int argc, char *argv[])
 {
-    vector<string> source00 = {
+    vector<string> source1 = {
         "dd=44"};    
-    vector<string> source0 = {
+    vector<string> source2 = {
         "newA = Altitude < 100 ? 0 : (Altitude - 100) * 3",
         "newB = Altitude < 100 ? Altitude : 100",
         "pushm()", 
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
         "drawm(1, 0, 0, 128, 128)",
         "popm"
         };                         
-    vector<string> source1 ={
+    vector<string> source3 ={
         "newA=Altitude > 100 ? 100 : Altitude",
         "newB=Altitude > 100 ? Altitude : 100",
         "pushm()", 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         "drawm(1, 0, 0, Altitude, 128)",
         "popm"
         };                             
-    vector<string> source = source0;
+    vector<string> source = source2;
     if (cf & rpn) {
     for (int i = 0; i < source.size(); i++) {
         program.push_back(makeRPN(source[i], keywords, VARIABLES, reportlevel)); 
@@ -133,29 +133,33 @@ void dialog()
         cout << "\nchoice ==> ";
         cin >> ch;
         cin.ignore();
-        if (ch == "r") return;
-            // cout << "you typed r" << endl;
+        if (ch == "r")
+            return;
+        // cout << "you typed r" << endl;
         if (ch != "")
         {
             choice = stoi(ch);
             cout << "choice = " << choice << endl;
-            if (choice == 2){
-                gInterpreter.Parse(R"(
-                    PushMatrix()        
-                    Translate(Altitude, 200)
-                    // Translate(200, Altitude)
-                    DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 255, 255 )
-                    PushMatrix()
-                    Translate(128, 100)        
-                    DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 0, 0, 255 )     
-                    PopMatrix()
-                    Translate(0, 200)
-                    DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 0, 0 )
-                    PopMatrix()
-                )");
-            }
-            else if (choice == 0) 
+            if (choice == 0)
+            {
+                glutLeaveMainLoop();
                 return;
+            }
+            else
+            switch (choice)
+            // bedoeling hiervan is om at runtime te wisselen van source, maar werkt nog nie goed.
+            // waarschijnlijk moet ik daarvoor den boel beter opkuisen vooraleer een nieuwe source te beginnen
+            {
+            case 1: 
+                cout << "111111111111" << endl;
+                break;
+            case 2: 
+                cout << "222222222222" << endl;
+                break;
+            
+            default:
+                break;
+            }
         }
         else if (ch == "r")
             cout << "you typed r" << endl;

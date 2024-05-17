@@ -5,7 +5,6 @@
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 
-#include "Interpreter.h"
 #include "Renderer.h"
 #include <png.h>
 #include "Texture.h"
