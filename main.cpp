@@ -18,6 +18,7 @@
 #include "tokengenerator.h"
 #include "rpngenerator.h"
 #include "calculator.h"
+#include "runprogram.h"
 
 using namespace std;
 
@@ -45,68 +46,64 @@ static int  reportlevel = 0;        // >0 means that tokengen and RPNgen output 
     vector<RPNToken> tokensRPN;
     vector<vector<RPNToken>> program;
 
-int main(int argc, char *argv[])
-{
-    vector<string> source1 = {
-        "dd=44"};    
-    vector<string> source2 = {
-        "newA = Altitude < 100 ? 0 : (Altitude - 100) * 3",
-        "newB = Altitude < 100 ? Altitude : 100",
-        "pushm()", 
-        "trnsm(200, 100)",
-        "sizeX = Altitude < 100 ? Altitude*2 : 200",
-        "drawm(2, 0, 0, sizeX*0.6 , 128)"
-        "pushm()",
-        "trnsm(newA*1.5 - 128 , newB * 1.5)",
-        "drawm(1, 0, 0, 128, 128)",
-        "popm"
-        };                         
-    vector<string> source3 ={
-        "newA=Altitude > 100 ? 100 : Altitude",
-        "newB=Altitude > 100 ? Altitude : 100",
-        "pushm()", 
-        "trnsm(newA, newB)",
-        "drawm(0, 0, 0, Altitude, 128)"
-        "pushm()",
-        "trnsm(200, 200)",
-        "drawm(1, 0, 0, Altitude, 128)",
-        "popm"
-        };                             
-    vector<string> source = source2;
-    if (cf & rpn) {
-    for (int i = 0; i < source.size(); i++) {
-        program.push_back(makeRPN(source[i], keywords, VARIABLES, reportlevel)); 
-        calcandprint(program[i], VARIABLES, reportlevel);
-        };
-    } 
-    
-    if (cf & gInt)
+    int main(int argc, char *argv[])
     {
-    gInterpreter.Parse(R"(
-        PushMatrix()        
-        Translate(Altitude, 200)
-        DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 255, 255 )
-        PushMatrix()
-        Translate(128, 100)        
-        DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 0, 0, 255 )     
-        PopMatrix()
-        Translate(0, 200)
-        DrawImage( spriteTest.png, 0, 0, 128, 128, 255, 255, 0, 0 )
-        PopMatrix()
-    )");
-    }
-
-    thread dialogThread(dialog);
-
-    if (cf & render)
+        auto prog = readProgram("source3.sin");
+         for (const std::string &line : prog)
     {
-        CRenderer::InitSetStart(argc, argv, Renderfunction);
+        std::cout << line << std::endl;
     }
+        // vector<string> prog = {"aha"};
+        // runP(prog, VARIABLES, 0);
 
-    dialogThread.join();
+        // return 0;
+        vector<string> source1 = {
+            "dd=44"};
+        vector<string> source3 = {
+            "newA=Altitude > 100 ? 100 : Altitude",
+            "newB=Altitude > 100 ? Altitude : 100",
+            "pushm()",
+            "trnsm(newA, newB)",
+            "drawm(0, 0, 0, Altitude, 128)"
+            "pushm()",
+            "trnsm(200, 200)",
+            "drawm(1, 0, 0, Altitude, 128)",
+            "popm"};
+        if (cf & rpn)
+        {
+            for (int i = 0; i < prog.size(); i++)
+            {
+                program.push_back(makeRPN(prog[i], keywords, VARIABLES, reportlevel));
+                calcandprint(program[i], VARIABLES, reportlevel);
+            };
+        }
 
-    return EXIT_SUCCESS;
-}
+        if (cf & gInt)
+        {
+            gInterpreter.Parse(R"(
+                               PushMatrix()
+                                   Translate(Altitude, 200)
+                                       DrawImage(spriteTest.png, 0, 0, 128, 128, 255, 255, 255, 255)
+                                           PushMatrix()
+                                               Translate(128, 100)
+                                                   DrawImage(spriteTest.png, 0, 0, 128, 128, 255, 0, 0, 255)
+                                                       PopMatrix()
+                                                           Translate(0, 200)
+                                                               DrawImage(spriteTest.png, 0, 0, 128, 128, 255, 255, 0, 0)
+                                                                   PopMatrix())");
+        }
+
+        thread dialogThread(dialog);
+
+        if (cf & render)
+        {
+            CRenderer::InitSetStart(argc, argv, Renderfunction);
+        }
+
+        dialogThread.join();
+
+        return EXIT_SUCCESS;
+    }
 
 void Renderfunction()
 {
@@ -130,7 +127,7 @@ void dialog()
     long unsigned int choice = 0;
     while (true)
     {
-        cout << "\nchoice ==> ";
+        cout << "\nchoice (0 to exit) ==> ";
         cin >> ch;
         cin.ignore();
         if (ch == "r")

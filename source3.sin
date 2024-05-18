@@ -1,0 +1,10 @@
+
+            newA=Altitude > 100 ? 100 : Altitude
+            newB=Altitude > 100 ? Altitude : 100
+            pushm()
+            trnsm(newA, newB)
+            drawm(0, 0, 0, Altitude, 128
+            pushm()
+            trnsm(200, 200)
+            drawm(1, 0, 0, Altitude, 128)
+            popm

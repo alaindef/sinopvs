@@ -11,6 +11,7 @@ set(SOURCES
     tokengenerator.cpp
     rpngenerator.cpp
     vartable.cpp
+    runprogram.cpp
 )
 
 set(HEADERS
@@ -20,11 +21,12 @@ set(HEADERS
     Renderer.h
     RenderMath.h
     Texture.h
-    calculator.h
     tokengenerator.h
     rpngenerator.h
     vartable.h
+    calculator.h
     utils.h
+    runprogram.h
     )
 
 find_package(PNG REQUIRED)
