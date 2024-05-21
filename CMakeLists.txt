@@ -4,7 +4,6 @@ project(sinop VERSION 0.1.0 LANGUAGES C CXX)
 set(SOURCES
     main.cpp
     FlightSimulator.cpp
-    Interpreter.cpp
     Renderer.cpp
     Texture.cpp
     calculator.cpp
@@ -17,7 +16,6 @@ set(SOURCES
 set(HEADERS
     FlightSimulator.h
     helperfunctions.h
-    Interpreter.h
     Renderer.h
     RenderMath.h
     Texture.h

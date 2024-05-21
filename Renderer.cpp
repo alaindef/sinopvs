@@ -25,7 +25,7 @@ void CRenderer::Render()
 {
     gFlightSimulator.Update();
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+    glClearColor(0.0f, 0.2f, 0.2f, 1.0f); // Set background color to black and opaque
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);         // Clear the color buffer (background)
 
     glMatrixMode(GL_MODELVIEW);
