@@ -252,13 +252,13 @@ int params(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 
 void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 {
-    Token save = tkList.get(-1);
+    Token save = tkList.get(-1);             // save the command (our cursor points to the next token!)
     tk = nextToken(tkList);
     int arity = 0;
     if (isa(tk, {OC::PAR_L}))
     {
         tk = tkList.pop();
-        arity = params(tk, tkList, tokensout);
+        arity = params(tk, tkList, tokensout);      // scan will go beyond the PAR_R
     }
     save.arity = arity;
     pushToken(save, tokensout);

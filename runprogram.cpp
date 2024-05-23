@@ -24,7 +24,7 @@ vector<string> readProgram(std::string filename){
     std::string line;
     while (std::getline(file, line))
     {
-        lines.push_back(line);
+        if (line[0] != '#') lines.push_back(line);
     }
 
     // Close the file

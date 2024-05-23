@@ -24,17 +24,7 @@ CFlightSimulator gFlightSimulator;
 
 void Renderfunction();
 void dialog();
-
-// control what parts will be executed
-const static int render = 1;
-const static int rpn = 2;
-const static int gInt = 4;
-// comment out what you do not want to see
-static int cf =
-    rpn
-    // + gInt
-    + render;
-static int reportlevel = 0; // >0 means that tokengen and RPNgen output will be printed
+static int reportlevel = 1; // >0 means that tokengen and RPNgen output will be printed
 
 // provisional globals
 VarTable VARIABLES;
@@ -44,35 +34,25 @@ vector<vector<RPNToken> > program;
 
 int main(int argc, char *argv[])
 {
-    auto prog = readProgram("source.sin");
+    // read and print the source program
+    auto prog = readProgram("sourceProgram.sin");
+    // auto prog = readProgram("source.sin");
     std::cout << "PROGRAM:\n-------" << endl;
     for (const std::string &line : prog)
     {
         std::cout << line << std::endl;
     }
-    // vector<string> prog = {"aha"};
-    // runP(prog, VARIABLES, 0);
 
-    // return 0;
-    if (cf & rpn)
+    // generate the program as a vector of RPN tokenlists
+    for (int i = 0; i < prog.size(); i++)
     {
-        for (int i = 0; i < prog.size(); i++)
-        {
-            program.push_back(makeRPN(prog[i], keywords, VARIABLES, reportlevel));
-            calcandprint(program[i], VARIABLES, reportlevel);
-        };
-    }
-
-    if (cf & gInt)
-    {  //removed
-    }
+        tokenList = makeTokenList(prog[i], keywords, VARIABLES, reportlevel);
+        program.push_back(makeRPN(prog[i], keywords, VARIABLES, reportlevel));
+    };
 
     thread dialogThread(dialog);
 
-    if (cf & render)
-    {
-        CRenderer::InitSetStart(argc, argv, Renderfunction);
-    }
+    CRenderer::InitSetStart(argc, argv, Renderfunction);                             // disabled for test !!!!!!!!!!!!!!!
 
     dialogThread.join();
 
@@ -81,13 +61,12 @@ int main(int argc, char *argv[])
 
 void Renderfunction()
 {
-        for (int i = 0; i < sizeof(VARIABLES.pings); i++)
-            png_to_gl_texture(&VARIABLES.tex[i], (VARIABLES.pings[i]).c_str());
-        for (int i = 0; i < program.size(); i++)
-        {
-            calcandprint(program[i], VARIABLES, false);
-        };
-    
+    for (int i = 0; i < sizeof(VARIABLES.pings); i++)
+        png_to_gl_texture(&VARIABLES.tex[i], (VARIABLES.pings[i]).c_str());
+    for (int i = 0; i < program.size(); i++)
+    {
+        calcandprint(program[i], VARIABLES, false);
+    };
 }
 
 void dialog()

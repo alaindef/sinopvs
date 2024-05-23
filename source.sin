@@ -1,4 +1,3 @@
-
             newA = Altitude < 100 ? 0 : (Altitude - 100) * 3
             newB = Altitude < 100 ? Altitude : 100
             pushm()
