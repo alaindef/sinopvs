@@ -59,7 +59,26 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "*.ipp": "cpp",
+        "bitset": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "valarray": "cpp",
+        "csignal": "cpp",
+        "cfenv": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "complex": "cpp",
+        "expected": "cpp",
+        "source_location": "cpp",
+        "format": "cpp",
+        "iomanip": "cpp",
+        "shared_mutex": "cpp",
+        "sstream": "cpp",
+        "stdfloat": "cpp",
+        "typeindex": "cpp",
+        "variant": "cpp"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }

@@ -36,6 +36,12 @@ expr14			::= var op14 expr13
 
 expr			::= expr14			| expr13
 
+program
+<program> 		::= {<statement>}*
+<statement> 	::= <ifstatement> | <assignmentstatement> | <action>
+<ifstatement> 	::= IF <expression> <thenclause> FI 
+<thenclause>	::= THEN <program>
+<action>		::= push() | pop()
 
 
 

@@ -4,27 +4,34 @@
 #include <vector>
 #include <string>
 #include "runprogram.h"
+#include "rpngenerator.h"
+#include "calculator.h"
+// #include "vartable.h"
 
-vector<string> readProgram(std::string filename){
+using namespace std;
+
+vector<string> readProgram(std::string filename)
+{
 
     // Open the file in read mode
-    std::ifstream file(filename);
+    ifstream file(filename);
 
     // Check if the file opened successfully
     if (!file.is_open())
     {
-        std::cerr << "Error opening file: " << filename << std::endl;
+        cerr << "Error opening file: " << filename << endl;
         return {""};
     }
 
     // Create a vector to store the lines
-    std::vector<std::string> lines;
+    vector<string> lines;
 
     // Read the file line by line
-    std::string line;
-    while (std::getline(file, line))
+    string line;
+    while (getline(file, line))
     {
-        if (line[0] != '#') lines.push_back(line);
+        if (line[0] != '#')
+            lines.push_back(line);
     }
 
     // Close the file
@@ -32,8 +39,67 @@ vector<string> readProgram(std::string filename){
     return lines;
 }
 
-void runP(std::vector<std::string> &program, VarTable &vartabel, bool prt)
-{
+void ifstatement(vector<RPNToken> &RPN, vector<vector<RPNToken> > &program, int &cursor);
 
-    cout << "from runP" << endl;
+void action(vector<RPNToken> &RPN, vector<vector<RPNToken> > &program, int &cursor);
+
+void exec(vector<string> &program, int &startLine, VarTable &vartabel, bool prt)
+{
+    if (startLine >= program.size())
+        return;
+    // cout << "startLine= " << startLine << "  line= " << program[startLine] << endl;
+    if (program[startLine] == "end")
+        cout << "end at " << startLine << endl;
+    cout << "executing line " << startLine << endl;
+    startLine++;
+    exec(program, startLine, vartabel, prt);
 }
+
+void runP(vector<string> &program, VarTable &vartabel, bool prt)
+{
+    int startLine = 0;
+    exec(program, startLine, vartabel, prt);
+}
+
+void exec(Lines &lineList, VarTable &vartabel, bool prt)
+{
+    if (lineList.done()) return;
+    vector<RPNToken> line = lineList.pop();
+    switch (line.front().opcode)
+    {
+    case OC::dif:
+        cout << "at line " << lineList.cursor << " dif " << endl;
+        // lineList.pop();
+        exec(lineList, vartabel, prt);
+        break;
+    case OC::end:
+        cout << "at line " << lineList.cursor << " end " << endl;
+        exec(lineList, vartabel, prt);
+        // lineList.pop();
+        return;
+    default:
+        calcandprint(line, vartabel, prt);
+        exec(lineList, vartabel, prt);
+        break;
+    }
+}
+
+void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel, bool prt)
+{
+    Lines lineList;
+    lineList.RPNList = RPNProgram;
+    exec(lineList, vartabel, prt);
+    return;
+}
+
+void ifstatement(vector<RPNToken> &RPN, vector<vector<RPNToken> > &program, int &cursor)
+{
+    cout << "ifstatement opcode is " << endl;
+    cursor++;
+};
+
+void action(vector<RPNToken> &RPN, vector<vector<RPNToken> > &program, int &cursor)
+{
+    cout << "action opcode is " << endl;
+    cursor++;
+};

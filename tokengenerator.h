@@ -38,12 +38,13 @@ enum class OC
     drawm,
     alti,
     dif,
+    end,
     NIL,
 };
 // pretty print opcodes
-const std::string ppOC[28] = {"NUM", "VAR", "MUL", "DIV", "ADD", "SUB", "PAS", "CHS", "LT", "LE",
+const std::string ppOC[29] = {"NUM", "VAR", "MUL", "DIV", "ADD", "SUB", "PAS", "CHS", "LT", "LE",
                               "GT", "GE", "EQ", "NE", "ASS", "QU", "COL", "PAR_L", "PAR_R", "COMMA",
-                              "FIRSTFUN", "pushm", "popm", "trnsm", "drawm", "alti", "dif", "NIL"};
+                              "FIRSTFUN", "pushm", "popm", "trnsm", "drawm", "alti", "dif", "end", "NIL"};
 
 struct Token
 {
@@ -81,6 +82,7 @@ const map<std::string, Token> keywords = {
     {"drawm", {OC::drawm, 0, 0, 0}},
     {"alti", {OC::alti, 0, 0, 15}},
     {"dif", {OC::dif, 0, 0, 15}},
+    {"end", {OC::end, 0, 0, 15}},
     {"NIL", {OC::NIL, -1, 0, 0}}};
 
 vector<Token> makeTokenList(string textIn,
