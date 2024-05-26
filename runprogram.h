@@ -12,7 +12,7 @@ struct Lines
     vector<RPNToken> pop()
     {
         if (cursor >= RPNList.size())
-            throw invalid_argument("symbols missing!");
+            throw invalid_argument("symbols missing in struct Lines!");
         return RPNList[cursor++];
     };
     vector<RPNToken> get(int shift)

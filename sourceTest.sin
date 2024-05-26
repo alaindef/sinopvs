@@ -1,0 +1,14 @@
+x=2
+dif x==2
+    x+100
+    dif x==3
+        x+200
+        dif x==4
+            7
+        end
+    end
+    10
+end
+12
+13 
+end

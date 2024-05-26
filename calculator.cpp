@@ -21,10 +21,10 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
 
     float res = 0;
     float param[9];
-    float p[10]; // parameters of an operator
+    float p[10];                        // parameters of an operator
 
     cursor = 0;
-    int pnr;
+    int pnr;                            // param number
     int arit;
 
     Rect recta = {0, 0, 256, 196};
@@ -37,7 +37,7 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
     {
         last = tokenlist[cursor];
 
-        arit = last.arity; // use arity to fill up params! or p[]
+        arit = last.arity;              // use arity to fill up params! or p[]
         for (pnr = arit; pnr > 0; pnr--)
         {
             p[pnr] = stack.back();
@@ -47,9 +47,11 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
         switch (last.opcode)
         {
         case OC::NUM:
+            res = last.value;
             stack.push_back(last.value);
             break;
         case OC::VAR:
+            res = vartabel.getValue(last.value);
             stack.push_back(vartabel.getValue((int)last.value));
             break;
         case OC::MUL:
@@ -130,13 +132,21 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
     return res;
 }
 
-void calcandprint(std::vector<RPNToken> &tokenlist, VarTable &vartabel, bool prt)
+float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel){
+    int cursor = tokenlist.size();
+    return calc(tokenlist, vartabel, cursor);
+}
+
+void calcandprint(std::vector<RPNToken> &tokenlist, VarTable &vartabel, bool printResult, bool printVartable)
 {
     int cursor = tokenlist.size();
     float result = calc(tokenlist, vartabel, cursor);
-    if (prt)
+    if (printResult)
     {
-        cout << "result = " << result << endl;
+        cout << " result = " << result;
+    }
+    if (printVartable)
+    {
         vartabel.printVarTable();
     }
 }

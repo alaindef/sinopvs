@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
     thread dialogThread(dialog);
 
-    // CRenderer::InitSetStart(argc, argv, Renderfunction);                             // disabled for test !!!!!!!!!!!!!!!
+    CRenderer::InitSetStart(argc, argv, Renderfunction);                             // disabled for test !!!!!!!!!!!!!!!
 
     dialogThread.join();
 
@@ -74,7 +74,7 @@ void Renderfunction()
         png_to_gl_texture(&VARIABLES.tex[i], (VARIABLES.pings[i]).c_str());
     for (int i = 0; i < RPNList.size(); i++)
     {
-        calcandprint(RPNList[i], VARIABLES, false);
+        calcandprint(RPNList[i], VARIABLES, false, false);
     };
 }
 
