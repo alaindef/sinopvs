@@ -7,6 +7,19 @@
 
 using namespace std;
 
+string pp(Token &token, const map<std::string, Token> &keys)
+{
+    for (auto entry = keys.rbegin(); entry != keys.rend(); ++entry)
+    {
+        const string &key = entry->first;
+        const Token &tok = entry->second;
+        if (token.opcode == tok.opcode)
+            // if (s.compare(0, key.size(), key) == 0)
+            return key;
+    }
+    return "nil";
+}
+
 void printtokengenerator(const vector<Token> &RPNTokens,
                          VarTable &vartabel, string &out, int report)
 {
@@ -96,19 +109,19 @@ vector<Token> makeTokenList(string textIn,
             // we have a keyword, but in the else section we were building an OPERAND
             // the operand has finished building, so we can now store it in a token and push it
             if (operand.size() > 0)
-            { 
+            {
                 // operand is a num or var
                 // if num store it in token, if var reserve an index for it in var array
                 storeValueOrIndex(operand, token, vartabel);
                 tokens.push_back(token);
                 out += "\t{" + operand + "}";
             }
-            operand = "";                       // operand has been treated, reset it to empty string
+            operand = ""; // operand has been treated, reset it to empty string
             // store the keyword in a token and push it
             token = keyPairFound.second;
             tokens.push_back(token);
             moveCursor = keyPairFound.first.size();
-            out += "\t|" + keyPairFound.first + "|";    // for 
+            out += "\t|" + keyPairFound.first + "|"; // for
         }
         else
         {

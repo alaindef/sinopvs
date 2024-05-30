@@ -5,10 +5,10 @@ dif x==2
         x+200
         dif x==4
             7
-        end
-    end
+        fi
+    fi
     10
-end
+fi
 12
 13 
-end
+fi

@@ -36,27 +36,28 @@ int main(int argc, char *argv[])
 {
     // read and print the source program
     // auto prog = readProgram("source.sin");
-    auto prog = readProgram("sourceTest.sin");
+    // auto prog = readProgram("sourceTest.sin");
+    auto src = readProgram("sourceifthenelse.sin");
     // auto prog = readProgram("source.sin");
-    std::cout << "PROGRAM:\n-------" << endl;
+    // std::cout << "PROGRAM:\n-------" << endl;
     // for (const std::string &line : prog) std::cout << line << std::endl;
-    for (int ln=0; ln<prog.size();ln++) std::cout << ln << " " << prog[ln] << std::endl;
+    // for (int ln=0; ln<src.size();ln++) std::cout << ln << " " << src[ln] << std::endl;
 
     // runP(prog, VARIABLES, false);
 
     // generate the program as a vector of RPN tokenlists
-    for (int i = 0; i < prog.size(); i++)
+    for (int i = 0; i < src.size(); i++)
     {
         // RPNList.push_back(makeRPN(prog[i], keywords, VARIABLES, reportlevel));
-        if (prog[i][0] == '#') continue;
-        tokenList = makeTokenList(prog[i], keywords, VARIABLES, reportlevel);
+        if (src[i][0] == '#') continue;
+        tokenList = makeTokenList(src[i], keywords, VARIABLES, reportlevel);
         RPNList.push_back(makeRPN(tokenList, reportlevel));
     };
 
     int cursor=0;
     // script(RPNList[0], RPNList, cursor);
     // runP(RPNList);
-    exec(RPNList, VARIABLES, false);
+    exec(RPNList, VARIABLES, src, false);
     return 0;
 
     thread dialogThread(dialog);

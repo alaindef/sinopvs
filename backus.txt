@@ -42,6 +42,7 @@ program
 <ifstatement> 	::= IF <expression> <thenclause> FI 
 <thenclause>	::= THEN <program>
 <action>		::= push() | pop()
+<ifthenelse>	::= IF <expression> <thenclause> ELSE <elseclause> FI
 
 
 

@@ -31,7 +31,7 @@ struct Lines
 
 
 vector<string> readProgram(std::string filename);
-void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel, bool prt);
+void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel, vector<string> &source, bool prt);
 
 int NewFunction(int &startLine, std::vector<std::vector<RPNToken> > &program, bool &retFlag);
 

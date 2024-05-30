@@ -38,13 +38,16 @@ enum class OC
     drawm,
     alti,
     dif,
-    end,
+    delse,
+    fi,
+    endp,
     NIL,
 };
 // pretty print opcodes
-const std::string ppOC[29] = {"NUM", "VAR", "MUL", "DIV", "ADD", "SUB", "PAS", "CHS", "LT", "LE",
+const std::string ppOC[31] = {"NUM", "VAR", "MUL", "DIV", "ADD", "SUB", "PAS", "CHS", "LT", "LE",
                               "GT", "GE", "EQ", "NE", "ASS", "QU", "COL", "PAR_L", "PAR_R", "COMMA",
-                              "FIRSTFUN", "pushm", "popm", "trnsm", "drawm", "alti", "dif", "end", "NIL"};
+                              "FIRSTFUN", "pushm", "popm", "trnsm", "drawm", "alti",
+                              "IF", "ELSE", "FI", "Finito", "NIL"};
 
 struct Token
 {
@@ -81,9 +84,13 @@ const map<std::string, Token> keywords = {
     {"trnsm", {OC::trnsm, 0, 0, 0}},
     {"drawm", {OC::drawm, 0, 0, 0}},
     {"alti", {OC::alti, 0, 0, 15}},
-    {"dif", {OC::dif, 0, 0, 15}},
-    {"end", {OC::end, 0, 0, 15}},
+    {"if", {OC::dif, 0, 0, 15}},
+    {"else", {OC::delse, 0, 0, 15}},
+    {"fi", {OC::fi, 0, 0, 15}},
+    {"endp", {OC::endp, 0, 0, 15}},
     {"NIL", {OC::NIL, -1, 0, 0}}};
+
+string pp(Token &token, map<std::string, Token> &keys);
 
 vector<Token> makeTokenList(string textIn,
                             const map<std::string, Token> &keywords,
