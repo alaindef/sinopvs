@@ -44,10 +44,10 @@ enum class OC
     NIL,
 };
 // pretty print opcodes
-const std::string ppOC[31] = {"NUM", "VAR", "MUL", "DIV", "ADD", "SUB", "PAS", "CHS", "LT", "LE",
-                              "GT", "GE", "EQ", "NE", "ASS", "QU", "COL", "PAR_L", "PAR_R", "COMMA",
-                              "FIRSTFUN", "pushm", "popm", "trnsm", "drawm", "alti",
-                              "IF", "ELSE", "FI", "Finito", "NIL"};
+const std::string ppOC[31] = {"NUM  ", "VAR  ", "MUL  ", "DIV  ", "ADD  ", "SUB  ", "PAS  ", "CHS  ", "LT   ", "LE   ",
+                              "GT   ", "GE   ", "EQ   ", "NE   ", "ASS  ", "QU   ", "COL  ", "PAR_L", "PAR_R", "COMMA",
+                              "FIRST", "pushm", "popm ", "trnsm", "drawm ", "alti ",
+                              "IF   ", "ELSE ", "FI   ", "Finito", "NIL  "};
 
 struct Token
 {

@@ -35,15 +35,10 @@ vector<vector<RPNToken> > RPNList;
 int main(int argc, char *argv[])
 {
     // read and print the source program
-    // auto prog = readProgram("source.sin");
-    // auto prog = readProgram("sourceTest.sin");
-    auto src = readProgram("sourceifthenelse.sin");
-    // auto prog = readProgram("source.sin");
-    // std::cout << "PROGRAM:\n-------" << endl;
-    // for (const std::string &line : prog) std::cout << line << std::endl;
-    // for (int ln=0; ln<src.size();ln++) std::cout << ln << " " << src[ln] << std::endl;
-
-    // runP(prog, VARIABLES, false);
+    auto src = readProgram("source.sin");
+    // auto src = readProgram("sourceTest.sin");
+    // auto src = readProgram("sourceifthen.sin");
+    // auto src = readProgram("source.sin");
 
     // generate the program as a vector of RPN tokenlists
     for (int i = 0; i < src.size(); i++)
@@ -54,11 +49,7 @@ int main(int argc, char *argv[])
         RPNList.push_back(makeRPN(tokenList, reportlevel));
     };
 
-    int cursor=0;
-    // script(RPNList[0], RPNList, cursor);
-    // runP(RPNList);
-    exec(RPNList, VARIABLES, src, false);
-    return 0;
+    // return 0;
 
     thread dialogThread(dialog);
 

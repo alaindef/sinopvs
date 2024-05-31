@@ -1,0 +1,21 @@
+x=2
+if x==1
+    x+100
+    if 3
+        33
+    fi
+else
+    if x+2==4
+        44
+    else 
+        y=55
+    fi
+fi
+a
+if 0
+    x+1000
+fi
+bb
+13 
+fi
+endp
