@@ -89,9 +89,12 @@ void prog(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, vector<st
     case OC::endp:
         return;
     default:
-        // calcandprint(line, vartabel, false, condition);
+        // calcandprint(line, vartabel, prt, true);
         if (condition)
+        {
             res = calc(line, vartabel);
+            // vartabel.printVarTable();
+        }
         break;
     }
 
@@ -105,6 +108,5 @@ void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel, vector<stri
     vector<RPNToken> line = {{}};
     cout << "\n parse:" << endl;
     prog(line, lineList, vartabel, source, prt, true);
-    // exec(line, lineList, vartabel, prt, true);
     return;
 }

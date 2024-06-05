@@ -13,7 +13,7 @@ class CRenderer
     static void DrawImage(CTexture* tex, Rect* sourcerect = nullptr, Color colorargb = 0xFFFFFFFF);
     static void StartRendering();
     static void SetRenderFunction(const std::function<void(void)>& f) { mRenderFunction = f;}
-    static void InitSetStart(int argc, char *argv[], const std::function<void(void)>& f);
+    static void InitSetStart(int argc, char *argv[], const std::function<void(void)>& init_f, const std::function<void(void)>& render_f);
 
     private:
     static CTexture mTexture;

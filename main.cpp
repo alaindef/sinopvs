@@ -22,6 +22,7 @@
 using namespace std;
 CFlightSimulator gFlightSimulator;
 
+void InitFunction();
 void Renderfunction();
 void dialog();
 static int reportlevel = 0; // >0 means that tokengen and RPNgen output will be printed
@@ -38,7 +39,7 @@ int main(int argc, char *argv[])
     auto src = readProgram("source.sin");
     // auto src = readProgram("sourceTest.sin");
     // auto src = readProgram("sourceifthen.sin");
-    // auto src = readProgram("source.sin");
+    // auto src = readProgram("source3.sin");
 
     // generate the program as a vector of RPN tokenlists
     for (int i = 0; i < src.size(); i++)
@@ -48,22 +49,29 @@ int main(int argc, char *argv[])
         tokenList = makeTokenList(src[i], keywords, VARIABLES, reportlevel);
         RPNList.push_back(makeRPN(tokenList, reportlevel));
     };
+    // VARIABLES.printVarTable();
+
+    exec(RPNList, VARIABLES, src, false);
 
     // return 0;
 
     thread dialogThread(dialog);
-
-    CRenderer::InitSetStart(argc, argv, Renderfunction);                             // disabled for test !!!!!!!!!!!!!!!
+    
+    CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction);                             // disabled for test !!!!!!!!!!!!!!!
 
     dialogThread.join();
 
     return EXIT_SUCCESS;
 }
 
-void Renderfunction()
+void InitFunction()
 {
     for (int i = 0; i < sizeof(VARIABLES.pings); i++)
         png_to_gl_texture(&VARIABLES.tex[i], (VARIABLES.pings[i]).c_str());
+}
+
+void Renderfunction()
+{
     for (int i = 0; i < RPNList.size(); i++)
     {
         calcandprint(RPNList[i], VARIABLES, false, false);

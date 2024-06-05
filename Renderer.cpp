@@ -121,9 +121,10 @@ void CRenderer::StartRendering()
     glutMainLoop();
 }
 
-void CRenderer::InitSetStart(int argc, char *argv[], const std::function<void(void)>& f)
+void CRenderer::InitSetStart(int argc, char *argv[], const std::function<void(void)>& init_f, const std::function<void(void)>& render_f)
 {
     Init(argc, argv);
-    SetRenderFunction(f);
+    init_f();
+    SetRenderFunction(render_f);
     StartRendering();
 }

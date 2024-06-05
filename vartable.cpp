@@ -48,7 +48,7 @@ void VarTable::printVarTable()
 {
     cout << "\nvar:   ";
     for (const auto &element : vartab)
-        cout << element.name << "\t";
+        cout << element.name.substr(0,4) << "\t";
     cout << "\nvar:   ";
     for (const auto &element : vartab)
     {

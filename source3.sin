@@ -7,4 +7,5 @@
             pushm()
             trnsm(200, 200)
             drawm(1, 0, 0, Altitude, 128)
-            popm
+            popm()
+            endp
