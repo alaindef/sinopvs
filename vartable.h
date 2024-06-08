@@ -35,7 +35,9 @@ struct VarTable
 
     void printVarTable();
 
-    string pings[4] = {"adfscrambled8.png", "spriteTest.png", "nin.png", "krokus.png"};
+    // I think png's should be 128x128 pixels
+
+    string pings[4] = {"adfscrambled10b.png", "spriteTest.png", "nin.png", "krokus.png"};
 
     CTexture tex[4];
 };

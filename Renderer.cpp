@@ -29,7 +29,7 @@ void CRenderer::Render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);         // Clear the color buffer (background)
 
     glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
+    // glPushMatrix();
     glLoadIdentity();
 
     // Draw a Red 1x1 Square centered at origin

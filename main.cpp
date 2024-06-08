@@ -1,5 +1,4 @@
 #ifdef __APPLE__
-#include <GLUT/glut.h>
 #else
 #include <GL/gl.h>
 #include <GL/freeglut.h>
@@ -44,20 +43,21 @@ int main(int argc, char *argv[])
     // generate the program as a vector of RPN tokenlists
     for (int i = 0; i < src.size(); i++)
     {
-        // RPNList.push_back(makeRPN(prog[i], keywords, VARIABLES, reportlevel));
-        if (src[i][0] == '#') continue;
+        if (src[i][0] == '#')
+            continue;
         tokenList = makeTokenList(src[i], keywords, VARIABLES, reportlevel);
         RPNList.push_back(makeRPN(tokenList, reportlevel));
     };
-    // VARIABLES.printVarTable();
+    VARIABLES.printVarTable();
 
-    exec(RPNList, VARIABLES, src, false);
+    exec(RPNList, VARIABLES, false);
+    // exec0(RPNList, VARIABLES);
 
     // return 0;
 
     thread dialogThread(dialog);
-    
-    CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction);                             // disabled for test !!!!!!!!!!!!!!!
+
+    CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction); // disabled for test !!!!!!!!!!!!!!!
 
     dialogThread.join();
 
@@ -66,16 +66,14 @@ int main(int argc, char *argv[])
 
 void InitFunction()
 {
+    // this has to occur after inti of openGL, so cannot be in vartable.h
     for (int i = 0; i < sizeof(VARIABLES.pings); i++)
         png_to_gl_texture(&VARIABLES.tex[i], (VARIABLES.pings[i]).c_str());
 }
 
 void Renderfunction()
 {
-    for (int i = 0; i < RPNList.size(); i++)
-    {
-        calcandprint(RPNList[i], VARIABLES, false, false);
-    };
+    exec0(RPNList, VARIABLES);
 }
 
 void dialog()
@@ -87,36 +85,29 @@ void dialog()
         cout << "\nchoice (0 to exit) ==> ";
         cin >> ch;
         cin.ignore();
-        if (ch == "r")
-            return;
-        // cout << "you typed r" << endl;
-        if (ch != "")
+        if (isNumeric(ch))
+        // if (ch != "")
         {
             choice = stoi(ch);
             cout << "choice = " << choice << endl;
-            if (choice == 0)
+            switch (choice)
             {
+            case 0:
                 glutLeaveMainLoop();
                 return;
+            case 1:
+                cout << "you typed 1. nice try" << endl;
+                break;
+            default:
+                cout << "you typed another interesting number. go on!" << endl;
+                break;
             }
-            else
-                switch (choice)
-                // bedoeling hiervan is om at runtime te wisselen van source, maar werkt nog nie goed.
-                // waarschijnlijk moet ik daarvoor den boel beter opkuisen vooraleer een nieuwe source te beginnen
-                {
-                case 1:
-                    cout << "111111111111" << endl;
-                    break;
-                case 2:
-                    cout << "222222222222" << endl;
-                    break;
-
-                default:
-                    break;
-                }
         }
-        else if (ch == "r")
-            cout << "you typed r" << endl;
+        else if (ch == "r")                                         // not used. reportLevel not propagated or so
+        {
+            reportlevel = 1 - (reportlevel > 0);
+            cout << "reportlevel now is " << reportlevel << endl;
+        }
         else
             cout << "no  number. retry" << endl;
     }

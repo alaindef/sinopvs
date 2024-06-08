@@ -137,7 +137,7 @@ void expr1_par(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
         tk = tkList.pop();
         expr13_tst(tk, tkList, tokensout);
         if (tk.opcode != OC::PAR_R)
-            throw invalid_argument("received " + static_cast<int>(tk.opcode));
+            throw invalid_argument("received " + to_string((int)tk.opcode));
         tk = nextToken(tkList);
     }
 }

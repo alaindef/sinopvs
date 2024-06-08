@@ -1,7 +1,7 @@
 newA = Altitude < 100 ? 0 : (Altitude - 100) * 3
 newB = Altitude < 100 ? Altitude : 100
 pushm()
-trnsm(200, 100)
+trnsm(300, 200)
 sizeX = Altitude < 100 ? Altitude*2 : 200
 drawm(2, 0, 0, sizeX*0.6 , 128)
 pushm()
@@ -9,8 +9,7 @@ trnsm(newA*1.5 - 128 , newB * 1.5)
 drawm(1, 0, 0, 128, 128)
 popm()
 if Altitude > 150
-    drawm(0, 0, 256, sizeX*0.6 , 128)
+    drawm(0, 256, 0, sizeX*0.6 , 128)
 fi
-popm()
 popm()
 endp

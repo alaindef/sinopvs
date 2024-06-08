@@ -57,6 +57,8 @@ float CFlightSimulator::GetNamedVariableValue(NamedVariableQuery variable)
         case ENamedVariable::FlapPosition:
             return mFlapPosition;
         break;
+        default:
+            break;
     }
     return 0.0f;
 }
