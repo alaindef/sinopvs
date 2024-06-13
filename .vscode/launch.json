@@ -9,7 +9,19 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/sinop",
-            "args": [],
+            // 
+            "args": [
+                // added 240613 https://stackoverflow.com/questions/59920063/finding-memory-leaks-in-a-c-application-with-vs-code#:~:text=It%20seems%20that%20you%20can,3rd%20party%20application%20or%20tool).
+                // "/Zi", // Generates complete debugging information
+                // "/MDd", // Use /MDd or /MTd to define _DEBUG and allow _CrtDumpMemoryLeaks()
+                // "/EHsc", // Specifies the model of exception handling - mode 'sc'
+                // "/Fe:", // Renames the executable file
+                // "${fileDirname}//${fileBasenameNoExtension}.exe",
+                // "${file}"
+                // https://stackoverflow.com/questions/57173093/how-to-include-compiler-flags-in-visual-studio-code
+                "-fsanitize=address",
+                "-g -O1"
+            ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -28,6 +40,5 @@
                 }
             ]
         }
-
     ]
 }

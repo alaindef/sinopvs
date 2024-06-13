@@ -65,7 +65,19 @@ void prog(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool prt,
 {
     float res = 0.0;
     line = lineList.pop();
-    OC opcode = line.front().opcode;
+    // OC opcode = line.front().opcode;
+    OC opcode;
+
+    try
+    {
+        opcode = line.front().opcode;
+    }
+    catch (const exception &e)
+    {
+        cout << "\n\n=====> runprogramcpp opcode" << e.what() << endl
+             << endl;
+        ;
+    };
     int lineNbr = lineList.cursor - 1;
     string run = condition ? "    " : "SKIP";
     cout << setw(2) << lineNbr << " " << setw(12) << left << ppOC[(int)opcode] << "\t" << run << endl;
@@ -104,7 +116,6 @@ void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel, bool prt)
     return;
 }
 
-
 void prog0(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool condition);
 
 void ifstatement0(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool condition)
@@ -128,12 +139,25 @@ void ifstatement0(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, b
         prog0(line, lineList, vartabel, condition);
 };
 
-
 void prog0(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool condition)
 {
     float res = 0.0;
     line = lineList.pop();
-    OC opcode = line.front().opcode;
+    // OC opcode = line.front().opcode;
+    OC opcode;
+    try
+    {
+        opcode = line.front().opcode;
+    }
+    catch (const exception &e)
+    {
+        cout << "\n\n=====> runprogramcpp opcode" << e.what() << endl
+             << endl;
+        ;
+    };
+
+
+
     int lineNbr = lineList.cursor - 1;
     string run = condition ? "    " : "SKIP";
 

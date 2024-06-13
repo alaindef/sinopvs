@@ -28,8 +28,6 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
     int arit;
 
     Rect recta = {0, 0, 256, 196};
-    CTexture adfTex;
-    png_to_gl_texture(&adfTex, "spriteTest.png");
 
     RPNToken last;
 
@@ -119,7 +117,6 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
             glTranslatef(p[1], p[2], 0);
             break;
         case OC::drawm:
-            // png_to_gl_texture(&adfTex, vartabel.pings[(int)p[1]].c_str());
             recta = {p[2], p[3], p[4], p[5]};
             CRenderer::DrawImage(&vartabel.tex[(int)p[1]], &recta, 0xFFFFFFFF);
             break;

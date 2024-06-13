@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     };
     VARIABLES.printVarTable();
 
-    exec(RPNList, VARIABLES, false);
+    // exec(RPNList, VARIABLES, false);
     // exec0(RPNList, VARIABLES);
 
     // return 0;
