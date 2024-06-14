@@ -24,9 +24,11 @@ CFlightSimulator gFlightSimulator;
 void InitFunction();
 void Renderfunction();
 void dialog();
-static int reportlevel = 0; // >0 means that tokengen and RPNgen output will be printed
 
+static int reportlevel = 0; // >0 means that tokengen and RPNgen output will be printed
 // provisional globals
+unsigned printResult    = 0;
+unsigned printVarTable  = 0;
 VarTable VARIABLES;
 vector<Token> tokenList;
 vector<RPNToken> tokensRPN;
@@ -35,12 +37,14 @@ vector<vector<RPNToken> > RPNList;
 int main(int argc, char *argv[])
 {
     // read and print the source program
-    auto src = readProgram("source.sin");
+    auto src = readProgram("source.sin");           // moving png's
     // auto src = readProgram("sourceTest.sin");
     // auto src = readProgram("sourceifthen.sin");
+    // auto src = readProgram("sourcewhile.sin");
     // auto src = readProgram("source3.sin");
 
     // generate the program as a vector of RPN tokenlists
+    VARIABLES.printVarTable();
     for (int i = 0; i < src.size(); i++)
     {
         if (src[i][0] == '#')
@@ -48,16 +52,14 @@ int main(int argc, char *argv[])
         tokenList = makeTokenList(src[i], keywords, VARIABLES, reportlevel);
         RPNList.push_back(makeRPN(tokenList, reportlevel));
     };
-    VARIABLES.printVarTable();
 
-    // exec(RPNList, VARIABLES, false);
-    // exec0(RPNList, VARIABLES);
+    exec(RPNList, VARIABLES);
 
     // return 0;
 
     thread dialogThread(dialog);
 
-    CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction); // disabled for test !!!!!!!!!!!!!!!
+    if (printResult+printVarTable==0) CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction); // no rendering when testing
 
     dialogThread.join();
 
@@ -73,7 +75,7 @@ void InitFunction()
 
 void Renderfunction()
 {
-    exec0(RPNList, VARIABLES);
+    exec(RPNList, VARIABLES);
 }
 
 void dialog()

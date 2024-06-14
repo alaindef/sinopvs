@@ -46,7 +46,7 @@ int VarTable::setVar(int index, float value)
 
 void VarTable::printVarTable()
 {
-    cout << "\nvar:   ";
+    cout << "var:   ";
     for (const auto &element : vartab)
         cout << element.name.substr(0,4) << "\t";
     cout << "\nvar:   ";

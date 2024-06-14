@@ -1,4 +1,9 @@
-newA = Altitude < 100 ? 0 : (Altitude - 100) * 3
+#newA = Altitude < 100 ? 0 : (Altitude - 100) * 3
+if Altitude < 100
+    newA = 0
+else 
+    newA = (Altitude - 100) * 3
+fi
 newB = Altitude < 100 ? Altitude : 100
 pushm()
 trnsm(300, 200)

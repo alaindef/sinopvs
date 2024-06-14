@@ -6,6 +6,6 @@
 
 
     float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel);
-    void calcandprint(std::vector<RPNToken> &tokenlist, VarTable& vartabel, bool printResult, bool printVartable);
+    float calcandprint(std::vector<RPNToken> &tokenlist, VarTable& vartabel);
 
 #endif // CALCULATOR_H

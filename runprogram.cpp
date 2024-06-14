@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -7,7 +6,6 @@
 #include "runprogram.h"
 #include "rpngenerator.h"
 #include "calculator.h"
-// #include "vartable.h"
 
 using namespace std;
 
@@ -36,158 +34,90 @@ vector<string> readProgram(std::string filename)
     return lines;
 }
 
-void action(vector<RPNToken> &RPN, vector<vector<RPNToken> > &program, int &cursor); // not used
+void prog(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, int condition);
 
-void prog(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool prt, bool condition);
-
-void ifstatement(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool prt, bool condition)
+void ifstatement(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, int condition)
 {
     float res = 0.0;
     line.erase(line.begin());
-    res = calc(line, vartabel);
+    // if statement can only be "if <condition>" in 1 line !
+    res = calc(line, vartabel); // calculates the value of the condition
     if (res > 0.1)
     {
-        prog(line, lineList, vartabel, prt, condition);
-        if (line.front().opcode == OC::delse)
-            prog(line, lineList, vartabel, prt, false);
+        prog(line, lineList, vartabel, condition);
+        if (line.front().opcode == OC::qElse)
+            prog(line, lineList, vartabel, false);
     }
     else
     {
-        prog(line, lineList, vartabel, prt, false);
-        if (line.front().opcode == OC::delse)
-            prog(line, lineList, vartabel, prt, condition);
+        prog(line, lineList, vartabel, false);
+        if (line.front().opcode == OC::qElse)
+            prog(line, lineList, vartabel, condition);
     }
-    if (line.front().opcode == OC::delse)
-        prog(line, lineList, vartabel, prt, condition);
+    if (line.front().opcode == OC::qElse)
+        prog(line, lineList, vartabel, condition);
 };
 
-void prog(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool prt, bool condition)
+void whilestatement(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, int lineNbr)
 {
     float res = 0.0;
-    line = lineList.pop();
-    // OC opcode = line.front().opcode;
-    OC opcode;
+    line.erase(line.begin());
+    // while statement can only be "if <condition>" in 1 line !
+    res = calc(line, vartabel); // calculates the value of the condition
+    if (res > 0.1)
+        prog(line, lineList, vartabel, lineNbr);
+};
 
-    try
+void prog(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, int condition)
+// for a "WHILE" statement condition will be used as linenumber (the start of the loop)
+{
+    extern unsigned printResult;
+    extern unsigned printVarTable;
+    float res = 0.0;
+    while (true)
     {
-        opcode = line.front().opcode;
-    }
-    catch (const exception &e)
-    {
-        cout << "\n\n=====> runprogramcpp opcode" << e.what() << endl
-             << endl;
-        ;
-    };
-    int lineNbr = lineList.cursor - 1;
-    string run = condition ? "    " : "SKIP";
-    cout << setw(2) << lineNbr << " " << setw(12) << left << ppOC[(int)opcode] << "\t" << run << endl;
+        line = lineList.pop();
+        int lineNbr = lineList.cursor - 1;
+        OC opcode = line.front().opcode;
 
-    switch (opcode)
-    {
-    case OC::dif:
-        ifstatement(line, lineList, vartabel, prt, condition);
-        break;
-    case OC::delse:
-        return;
-    case OC::fi:
-        return;
-    case OC::endp:
-        return;
-    default:
-        // calcandprint(line, vartabel, prt, true);
-        if (condition)
+        string run = condition ? "    " : "SKIP"; // test only --if statement
+
+        switch (opcode)
         {
-            res = calc(line, vartabel);
-            // vartabel.printVarTable();
+        case OC::qIf:
+            ifstatement(line, lineList, vartabel, condition);
+            break;
+        case OC::qElse:
+            return;
+        case OC::fIq:
+            return;
+        case OC::qWhile:
+            whilestatement(line, lineList, vartabel, lineNbr);
+            break;
+        case OC::elihWq:
+            lineList.cursor = condition + 1;
+            return;
+        case OC::endp:
+            return;
+        default:
+            if (condition)
+                // res = calc(line, vartabel);
+                res = calcandprint(line, vartabel);
+            if (printResult)
+                cout << "\nat line " << lineList.cursor << " result = " << res << endl;
+            if (printVarTable)
+                vartabel.printVarTable();
+            break;
         }
-        break;
     }
-
-    prog(line, lineList, vartabel, prt, condition);
+    prog(line, lineList, vartabel, condition);
 }
 
-void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel, bool prt)
+void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel)
 {
     Lines lineList;
     lineList.RPNList = RPNProgram;
     vector<RPNToken> line = {{}};
-    // cout << "\n parse:" << endl;
-    prog(line, lineList, vartabel, prt, true);
-    return;
-}
-
-void prog0(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool condition);
-
-void ifstatement0(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool condition)
-{
-    float res = 0.0;
-    line.erase(line.begin());
-    res = calc(line, vartabel);
-    if (res > 0.1)
-    {
-        prog0(line, lineList, vartabel, condition);
-        if (line.front().opcode == OC::delse)
-            prog0(line, lineList, vartabel, false);
-    }
-    else
-    {
-        prog0(line, lineList, vartabel, false);
-        if (line.front().opcode == OC::delse)
-            prog0(line, lineList, vartabel, condition);
-    }
-    if (line.front().opcode == OC::delse)
-        prog0(line, lineList, vartabel, condition);
-};
-
-void prog0(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, bool condition)
-{
-    float res = 0.0;
-    line = lineList.pop();
-    // OC opcode = line.front().opcode;
-    OC opcode;
-    try
-    {
-        opcode = line.front().opcode;
-    }
-    catch (const exception &e)
-    {
-        cout << "\n\n=====> runprogramcpp opcode" << e.what() << endl
-             << endl;
-        ;
-    };
-
-
-
-    int lineNbr = lineList.cursor - 1;
-    string run = condition ? "    " : "SKIP";
-
-    switch (opcode)
-    {
-    case OC::dif:
-        ifstatement0(line, lineList, vartabel, condition);
-        break;
-    case OC::delse:
-        return;
-    case OC::fi:
-        return;
-    case OC::endp:
-        return;
-    default:
-        if (condition)
-        {
-            res = calc(line, vartabel);
-        }
-        break;
-    }
-
-    prog0(line, lineList, vartabel, condition);
-}
-
-void exec0(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel)
-{
-    Lines lineList;
-    lineList.RPNList = RPNProgram;
-    vector<RPNToken> line = {{}};
-    prog0(line, lineList, vartabel, true);
+    prog(line, lineList, vartabel, 1);
     return;
 }

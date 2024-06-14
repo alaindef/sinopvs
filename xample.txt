@@ -31,7 +31,7 @@ y = 280
 while (y > 20)
     DrawLine(points=(20, y), color=(255, 255, 255, y > 80 ? 255 : 0))
     y = y - 50
-endwhile
+enqWhile
 // box
 DrawLine(points=(20,10, 20,290, 90,290, 90,10), width=2.5)
 // arrow

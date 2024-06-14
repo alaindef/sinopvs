@@ -1,9 +1,9 @@
 x=2
-dif x==2
+if x==2
     x+100
-    dif x==3
+    if x==3
         x+200
-        dif x==4
+        if x==4
             7
         fi
     fi
@@ -12,3 +12,4 @@ fi
 12
 13 
 fi
+endp

@@ -37,17 +37,19 @@ enum class OC
     trnsm,
     drawm,
     alti,
-    dif,
-    delse,
-    fi,
+    qIf,
+    qElse,
+    fIq,
+    qWhile,
+    elihWq,
     endp,
     NIL,
 };
 // pretty print opcodes
-const std::string ppOC[31] = {"NUM  ", "VAR  ", "MUL  ", "DIV  ", "ADD  ", "SUB  ", "PAS  ", "CHS  ", "LT   ", "LE   ",
+const std::string ppOC[33] = {"NUM  ", "VAR  ", "MUL  ", "DIV  ", "ADD  ", "SUB  ", "PAS  ", "CHS  ", "LT   ", "LE   ",
                               "GT   ", "GE   ", "EQ   ", "NE   ", "ASS  ", "QU   ", "COL  ", "PAR_L", "PAR_R", "COMMA",
                               "FIRST", "pushm", "popm ", "trnsm", "drawm ", "alti ",
-                              "IF   ", "ELSE ", "FI   ", "Finito", "NIL  "};
+                              "IF   ", "ELSE ", "FI   ", "WHILE", "elihWq", "Finito", "NIL  "};
 
 struct Token
 {
@@ -84,9 +86,11 @@ const map<std::string, Token> keywords = {
     {"trnsm", {OC::trnsm, 0, 0, 0}},
     {"drawm", {OC::drawm, 0, 0, 0}},
     {"alti", {OC::alti, 0, 0, 15}},
-    {"if", {OC::dif, 0, 0, 15}},
-    {"else", {OC::delse, 0, 0, 15}},
-    {"fi", {OC::fi, 0, 0, 15}},
+    {"if", {OC::qIf, 0, 0, 15}},
+    {"else", {OC::qElse, 0, 0, 15}},
+    {"fi", {OC::fIq, 0, 0, 15}},
+    {"while", {OC::qWhile, 0, 0, 15}},
+    {"elihw", {OC::elihWq, 0, 0, 15}},
     {"endp", {OC::endp, 0, 0, 15}},
     {"NIL", {OC::NIL, -1, 0, 0}}};
 
