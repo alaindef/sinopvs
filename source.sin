@@ -17,4 +17,12 @@ if Altitude > 150
     drawm(0, 256, 0, sizeX*0.6 , 128)
 fi
 popm()
+pushm()
+flap =  128 + (FlapPosition - 100)/2.5
+needlepos =  flap > 128 ? flap/2 : 128
+trnsm(512,512)
+#rotm(60,60,128,-128)
+rotm(needlepos,needlepos,128,-128)
+drawm(4, 0, 0, 8, 128)
+popm()
 endp

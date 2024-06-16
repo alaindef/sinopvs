@@ -11,13 +11,16 @@ void CFlightSimulator::Update()
     uint64_t elapsedTicks = GetTickCountMs() - mTicksOnLastUpdate;
     mTicksOnLastUpdate = GetTickCountMs();
     static float period = 5000; //5000ms
-    float a = ((mTicksOnLastUpdate % (uint64_t)period) / period) * 6.28;
+    // float a = ((mTicksOnLastUpdate % (uint64_t)period) / period) * 6.28;
+    float a = ((mTicksOnLastUpdate) / period) * 6.28;
     float s = sinf(a); // varies between -1 and +1
+    float p = sinf(a/4.0); // varies between -1 and +1
 
     mAltitude = 100 + 100 * s;
-    mFlapPosition = 0.5 + (s / 2.f);
-    mEngineRPM[0] = 2000 + 500 * s;
-    mEngineRPM[1] = 2000 + 500 * -s;
+    // mFlapPosition = 0.5 + (p / 2.f);
+    mFlapPosition = 200 + 100 * p ;
+    mEngineRPM[0] = 2000 + 500 * p;
+    mEngineRPM[1] = 2000 + 500 * p;
 
     UpdateNamedVariableFloats();
 }

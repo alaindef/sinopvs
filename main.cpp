@@ -76,6 +76,7 @@ void InitFunction()
 void Renderfunction()
 {
     exec(RPNList, VARIABLES);
+    // cout << "Flap: " << *gFlightSimulator.GetAddressOfNamedVariableFloat("FlapPosition") << endl;
 }
 
 void dialog()

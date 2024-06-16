@@ -116,6 +116,9 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
         case OC::trnsm:
             glTranslatef(p[1], p[2], 0);
             break;
+        case OC::rotm:
+            glRotatef(p[1], p[2], p[3], p[4]);
+            break;
         case OC::drawm:
             recta = {p[2], p[3], p[4], p[5]};
             CRenderer::DrawImage(&vartabel.tex[(int)p[1]], &recta, 0xFFFFFFFF);

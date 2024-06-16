@@ -15,8 +15,8 @@ struct VarTable
     };
 
     vector<VarValue> vartab = {{"Altitude", 300},
-                               {"EngineRPM", 0},
                                {"FlapPosition", 0},
+                               {"EngineRPM", 0},
                                {"a", -10},
                                {"b", 10}};
 
@@ -26,6 +26,7 @@ struct VarTable
 
     float getValue(int index);
     // get value at index. error if index > size of vartable
+    // if index < 3 returns value from flightsimulator
 
     int setVar(string name, float value);
     // if name found modify the value, if not store value in new entry. returns index
@@ -37,9 +38,9 @@ struct VarTable
 
     // I think png's should be 128x128 pixels
 
-    string pings[4] = {"adfscrambled10b.png", "spriteTest.png", "nin.png", "krokus.png"};
+    string pings[5] = {"adfscrambled10b.png", "spriteTest.png", "nin.png", "krokus.png", "needle.png"};
 
-    CTexture tex[4];
+    CTexture tex[5];
 };
 
 #endif // VARTABLE_H
