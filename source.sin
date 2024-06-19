@@ -1,15 +1,27 @@
-#newA = Altitude < 100 ? 0 : (Altitude - 100) * 3
+#play with the altitude 
 if Altitude < 100
     newA = 0
 else 
     newA = (Altitude - 100) * 3
 fi
 newB = Altitude < 100 ? Altitude : 100
+#create a compass dial 
 pushm()
-trnsm(300, 200)
+trnsm(448,448)
+drawm(5, 0, 0, 128, 128)
+popm()
+#create a X-Y carthesian cross
+pushm()
+trnsm(192,452)
+drawm(6, 0, 0, 128, 128)
+popm()
+#put an idiot picture on the screen
+pushm()
+trnsm(256, 64)
 sizeX = Altitude < 100 ? Altitude*2 : 200
 drawm(2, 0, 0, sizeX*0.6 , 128)
 pushm()
+#put a moving sprite picture on the screen 
 trnsm(newA*1.5 - 128 , newB * 1.5)
 drawm(1, 0, 0, 128, 128)
 popm()
@@ -17,12 +29,21 @@ if Altitude > 150
     drawm(0, 256, 0, sizeX*0.6 , 128)
 fi
 popm()
+#put a moving needle - Flap pos
 pushm()
 flap =  128 + (FlapPosition - 100)/2.5
-needlepos =  flap > 128 ? flap/2 : 128
-trnsm(512,512)
+needlepos =  flap > 128 ? flap : 128
+trnsm(256,512)
 #rotm(60,60,128,-128)
-rotm(needlepos,needlepos,128,-128)
-drawm(4, 0, 0, 8, 128)
+rotm(needlepos,0,0,1)
+drawm(4, 0, 0, 8, 64)
+popm()
+#put another moving needle (ticks)
+pushm()
+rpm =  getms()
+rpm = -rpm/5
+trnsm(512,512)
+rotm(rpm,0,0,1)
+drawm(4, 0, 0, 4, 64)
 popm()
 endp

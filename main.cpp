@@ -27,8 +27,8 @@ void dialog();
 
 static int reportlevel = 0; // >0 means that tokengen and RPNgen output will be printed
 // provisional globals
-unsigned printResult    = 0;
-unsigned printVarTable  = 0;
+unsigned printResult = 0;
+unsigned printVarTable = 0;
 VarTable VARIABLES;
 vector<Token> tokenList;
 vector<RPNToken> tokensRPN;
@@ -37,7 +37,7 @@ vector<vector<RPNToken> > RPNList;
 int main(int argc, char *argv[])
 {
     // read and print the source program
-    auto src = readProgram("source.sin");           // moving png's
+    auto src = readProgram("source.sin"); // moving png's
     // auto src = readProgram("sourceTest.sin");
     // auto src = readProgram("sourceifthen.sin");
     // auto src = readProgram("sourcewhile.sin");
@@ -59,7 +59,8 @@ int main(int argc, char *argv[])
 
     thread dialogThread(dialog);
 
-    if (printResult+printVarTable==0) CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction); // no rendering when testing
+    if (printResult + printVarTable == 0)
+        CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction); // no rendering when testing
 
     dialogThread.join();
 
@@ -69,7 +70,11 @@ int main(int argc, char *argv[])
 void InitFunction()
 {
     // this has to occur after inti of openGL, so cannot be in vartable.h
-    for (int i = 0; i < sizeof(VARIABLES.pings); i++)
+    int pingsSize = sizeof(VARIABLES.pings) / sizeof(VARIABLES.pings[0]);
+    int texSize = sizeof(VARIABLES.tex) / sizeof(VARIABLES.tex[0]);
+    if (pingsSize != texSize)
+        cout << "ERROR: pings and text have different sizes" << endl;
+    for (int i = 0; i < pingsSize ; i++)
         png_to_gl_texture(&VARIABLES.tex[i], (VARIABLES.pings[i]).c_str());
 }
 
@@ -106,7 +111,7 @@ void dialog()
                 break;
             }
         }
-        else if (ch == "r")                                         // not used. reportLevel not propagated or so
+        else if (ch == "r") // not used. reportLevel not propagated or so
         {
             reportlevel = 1 - (reportlevel > 0);
             cout << "reportlevel now is " << reportlevel << endl;

@@ -32,6 +32,7 @@ enum class OC
     COMMA,
 
     FIRSTFUN,
+    getms,
     pushm,
     popm,
     trnsm,
@@ -47,9 +48,9 @@ enum class OC
     NIL,
 };
 // pretty print opcodes
-const std::string ppOC[34] = {"NUM  ", "VAR  ", "MUL  ", "DIV  ", "ADD  ", "SUB  ", "PAS  ", "CHS  ", "LT   ", "LE   ",
+const std::string ppOC[35] = {"NUM  ", "VAR  ", "MUL  ", "DIV  ", "ADD  ", "SUB  ", "PAS  ", "CHS  ", "LT   ", "LE   ",
                               "GT   ", "GE   ", "EQ   ", "NE   ", "ASS  ", "QU   ", "COL  ", "PAR_L", "PAR_R", "COMMA",
-                              "FIRST", "pushm", "popm ", "trnsm", "rotm ", "drawm ", "alti ",
+                              "FIRST", "getms", "pushm", "popm ", "trnsm", "rotm ", "drawm", "alti ",
                               "IF   ", "ELSE ", "FI   ", "WHILE", "elihWq", "Finito", "NIL  "};
 
 struct Token
@@ -82,6 +83,7 @@ const map<std::string, Token> keywords = {
     {")", {OC::PAR_R, -1, -1, 0}},
     {",", {OC::COMMA, -1, -1, 0}},
     {"FIRSTFUN", {OC::FIRSTFUN, 0, 0, 0}},
+    {"getms", {OC::getms, 0, 0, 0}},
     {"pushm", {OC::pushm, 0, 0, 0}},
     {"popm", {OC::popm, 0, 0, 0}},
     {"trnsm", {OC::trnsm, 0, 0, 0}},

@@ -5,6 +5,7 @@
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 
+#include "helperfunctions.h"
 #include "Renderer.h"
 #include <png.h>
 #include "Texture.h"
@@ -105,6 +106,10 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
             break;
         case OC::COL:
             res = p[1] ? p[2] : p[3];
+            stack.push_back(res);
+            break; 
+        case OC::getms:
+            res = GetTickCountMs();
             stack.push_back(res);
             break;
         case OC::pushm:
