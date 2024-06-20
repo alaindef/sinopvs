@@ -2,8 +2,12 @@
 #include <iostream>
 
 #include "FlightSimulator.h"
+#include "FSData.h"
 
 extern CFlightSimulator gFlightSimulator;
+extern CFSData gFSData;
+
+bool gUseXPData = true;
 
 using namespace std;
 
@@ -19,10 +23,17 @@ int VarTable::getIndex(string name)
 float VarTable::getValue(int index)
 {
     float val;
-    if (index < 3)
-        val = *gFlightSimulator.GetAddressOfNamedVariableFloat(vartab[index].name);
+    if (gUseXPData)
+    {
+        val = gFSData.GetAltitude();
+    }
     else
-        val = vartab[index].value;
+    {
+        if (index < 3)
+            val = *gFlightSimulator.GetAddressOfNamedVariableFloat(vartab[index].name);
+        else
+            val = vartab[index].value;
+    }
     return val;
 }
 
@@ -48,7 +59,7 @@ void VarTable::printVarTable()
 {
     cout << "var:   ";
     for (const auto &element : vartab)
-        cout << element.name.substr(0,4) << "\t";
+        cout << element.name.substr(0, 4) << "\t";
     cout << "\nvar:   ";
     for (const auto &element : vartab)
     {

@@ -11,6 +11,7 @@ set(SOURCES
     rpngenerator.cpp
     vartable.cpp
     runprogram.cpp
+    FSData.cpp
 )
 
 set(HEADERS
@@ -25,6 +26,7 @@ set(HEADERS
     calculator.h
     utils.h
     runprogram.h
+    FSData.h
     )
 
 find_package(PNG REQUIRED)

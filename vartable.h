@@ -38,10 +38,12 @@ struct VarTable
 
     // I think png's should be 128x128 pixels
 
-    string pings[7] = {"adfscrambled10b.png", "spriteTest.png", "nin.png", "krokus.png", "needle.png",
+    string pings[7] = {"adfscrambled-128.png", "spriteTest.png", "nin.png", "adfscrambled-256.png", "needle.png",
                        "G1000_1_scale_rotating-128.png", "carthesius-128.png"};
 
     CTexture tex[7];
+
+    bool gUseXPData;
 };
 
 #endif // VARTABLE_H

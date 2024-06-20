@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "FlightSimulator.h"
+#include "FSData.h"
 
 #include "utils.h"
 #include "vartable.h"
@@ -34,14 +35,16 @@ vector<Token> tokenList;
 vector<RPNToken> tokensRPN;
 vector<vector<RPNToken> > RPNList;
 
+CFSData gFSData;
+
 int main(int argc, char *argv[])
 {
     // read and print the source program
-    auto src = readProgram("source.sin"); // moving png's
+    // auto src = readProgram("source3.sin");       // source2 and source3 moving png's
+    auto src = readProgram("source-meters-only.sin"); // only metering altitude and ticks
     // auto src = readProgram("sourceTest.sin");
     // auto src = readProgram("sourceifthen.sin");
     // auto src = readProgram("sourcewhile.sin");
-    // auto src = readProgram("source3.sin");
 
     // generate the program as a vector of RPN tokenlists
     VARIABLES.printVarTable();
@@ -53,9 +56,12 @@ int main(int argc, char *argv[])
         RPNList.push_back(makeRPN(tokenList, reportlevel));
     };
 
-    exec(RPNList, VARIABLES);
+    // exec(RPNList, VARIABLES);
 
     // return 0;
+
+    gFSData.InitData();
+    gFSData.CreateSocket();
 
     thread dialogThread(dialog);
 
@@ -90,7 +96,7 @@ void dialog()
     long unsigned int choice = 0;
     while (true)
     {
-        cout << "\nchoice (0 to exit) ==> ";
+        cout << "\nchoice (1 to switch data source, 0 to exit) ==> ";
         cin >> ch;
         cin.ignore();
         if (isNumeric(ch))
@@ -102,9 +108,12 @@ void dialog()
             {
             case 0:
                 glutLeaveMainLoop();
+                gFSData.CloseSocket();
                 return;
             case 1:
-                cout << "you typed 1. nice try" << endl;
+                VARIABLES.gUseXPData = 1 - (VARIABLES.gUseXPData > 0);
+                cout << "you typed 1. we will switch to the other data source" << endl;
+
                 break;
             default:
                 cout << "you typed another interesting number. go on!" << endl;

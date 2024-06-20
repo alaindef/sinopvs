@@ -77,6 +77,7 @@ void prog(vector<RPNToken> &line, Lines &lineList, VarTable &vartabel, int condi
     while (true)
     {
         line = lineList.pop();
+        while (line.size() == 0) line = lineList.pop();  
         int lineNbr = lineList.cursor - 1;
         OC opcode = line.front().opcode;
 
