@@ -112,7 +112,7 @@ void dialog()
                 return;
             case 1:
                 VARIABLES.gUseXPData = 1 - (VARIABLES.gUseXPData > 0);
-                cout << "you typed 1. we will switch to the other data source" << endl;
+                cout << "we will switch to the other data source " << VARIABLES.gUseXPData << endl;
 
                 break;
             default:

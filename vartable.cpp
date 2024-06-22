@@ -23,17 +23,29 @@ int VarTable::getIndex(string name)
 float VarTable::getValue(int index)
 {
     float val;
-    if (gUseXPData)
+    if (index < 3)
     {
-        val = gFSData.GetAltitude();
+        if (gUseXPData)
+            switch (index)
+            {
+            case 0:
+                val = gFSData.GetAltitude();
+                break;
+            case 1:
+1
+                val = gFSData.GetHeading();
+                break;
+            case 2:
+                val = gFSData.GetBankAngle();
+                break;
+            default: break;
+            }
+        else
+            val = *gFlightSimulator.GetAddressOfNamedVariableFloat(vartab[index].name);
     }
     else
-    {
-        if (index < 3)
-            val = *gFlightSimulator.GetAddressOfNamedVariableFloat(vartab[index].name);
-        else
-            val = vartab[index].value;
-    }
+        val = vartab[index].value;
+
     return val;
 }
 

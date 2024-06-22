@@ -22,10 +22,12 @@ popm()
 
 #put another moving needle (ticks)
 pushm()
-rpm =  getms()
+rpm =  Altitude
+#rpm =  getms()
 rpm = -rpm/5
 trnsm(512,112)
 rotm(rpm,0,0,1)
 drawm(4, 0, 0, 4, 64)
 popm()
+
 endp

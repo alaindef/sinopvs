@@ -1,12 +1,8 @@
 rpngenerator @ params: "// no COMMA means zero params, 1 COMMA means 2 PARAMS" not implemented 
     (see expresion parser)
-RPNgen:
-    void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
-{
-    Token save = tkList.get(-1);             // save the command (our cursor points to the next token!)
-    tk = nextToken(tkList);       !!!!!!!!!!!!! waarom niet pop?
-    int arity = 0;
-    if (isa(tk, {OC::PAR_L}))
-    {
-        tk = tkList.pop();
+
 remove compiler warnings
+
+
+note: sudo netstat -ntlp for ports in use
+
