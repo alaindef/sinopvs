@@ -15,8 +15,8 @@ struct VarTable
     };
 
     vector<VarValue> vartab = {{"Altitude", 300},
-                               {"FlapPosition", 0},
-                               {"EngineRPM", 0},
+                               {"BankAngle", 0},
+                               {"PitchAngle", 0},
                                {"a", -10},
                                {"b", 10}};
 

@@ -32,11 +32,10 @@ float VarTable::getValue(int index)
                 val = gFSData.GetAltitude();
                 break;
             case 1:
-1
-                val = gFSData.GetHeading();
+                val = gFSData.GetBankAngle();
                 break;
             case 2:
-                val = gFSData.GetBankAngle();
+                val = gFSData.GetPitchangle();
                 break;
             default: break;
             }
