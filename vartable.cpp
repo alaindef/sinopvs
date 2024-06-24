@@ -22,8 +22,9 @@ int VarTable::getIndex(string name)
 
 float VarTable::getValue(int index)
 {
+    int fsVars = 6;                             // variables with VarTable index lower than this come from gFlightSimulator
     float val;
-    if (index < 3)
+    if (index < fsVars)
     {
         if (gUseXPData)
             switch (index)
@@ -36,6 +37,15 @@ float VarTable::getValue(int index)
                 break;
             case 2:
                 val = gFSData.GetPitchangle();
+                break;
+            case 3:
+                val = gFSData.GetHeading();
+                break;
+            case 4:
+                val = gFSData.GetRollrate();
+                break;
+            case 5:
+                val = gFSData.GetGroundspeed();
                 break;
             default: break;
             }

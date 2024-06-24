@@ -17,6 +17,9 @@ struct VarTable
     vector<VarValue> vartab = {{"Altitude", 300},
                                {"BankAngle", 0},
                                {"PitchAngle", 0},
+                               {"Heading", 0},
+                               {"RollRate", 0},
+                               {"GroundSpeed", 0},
                                {"a", -10},
                                {"b", 10}};
 

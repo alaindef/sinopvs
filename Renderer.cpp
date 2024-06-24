@@ -2,9 +2,11 @@
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 #include <functional>
+#include "FSData.h"
 #include "FlightSimulator.h"
 
 extern CFlightSimulator gFlightSimulator;
+extern CFSData gFSData;
 
 CTexture CRenderer::mTexture;
 std::function<void(void)> CRenderer::mRenderFunction = nullptr;
@@ -130,10 +132,13 @@ void CRenderer::DrawImage(CTexture *tex, Rect *sourcerect, Color color)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void keyboard(unsigned char key, int x, int y) {
-  if (key == 'q' || key == 27) { // 'q' or Escape key
-    glutLeaveMainLoop();
-  }
+void keyboard(unsigned char key, int x, int y)
+{
+    if (key == 'q' || key == 27)
+    { // 'q' or Escape key
+        gFSData.CloseSocket();
+        glutLeaveMainLoop();
+    }
 }
 
 void CRenderer::InitSetStart(int argc, char *argv[], const std::function<void(void)> &init_f, const std::function<void(void)> &render_f)
@@ -141,7 +146,7 @@ void CRenderer::InitSetStart(int argc, char *argv[], const std::function<void(vo
     Init(argc, argv);
     init_f();
 
-    glutKeyboardFunc(keyboard);     // does not stop dialog thread! enter "0" instead in terminal
+    glutKeyboardFunc(keyboard); // does not stop dialog thread! enter "0" instead in terminal
     SetRenderFunction(render_f);
     glutMainLoop();
 }

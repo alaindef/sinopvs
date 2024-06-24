@@ -108,8 +108,8 @@ void dialog()
             switch (choice)
             {
             case 0:
-                glutLeaveMainLoop();
                 gFSData.CloseSocket();
+                glutLeaveMainLoop();
                 return;
             case 1:
                 VARIABLES.gUseXPData = 1 - (VARIABLES.gUseXPData > 0);
