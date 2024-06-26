@@ -116,14 +116,23 @@ void CRenderer::DrawImage(CTexture *tex, Rect *sourcerect, Color color)
         float toppct = 1 - sourcerect->top / tex->h;
         float rightpct = sourcerect->right / tex->w;
         float bottompct = 1 - sourcerect->bottom / tex->h;
+        //adf
         glTexCoord2f(leftpct, toppct);
-        glVertex2f(0, 0);
+        glVertex2f(-w/2, -h/2);
         glTexCoord2f(leftpct, bottompct);
-        glVertex2f(0, h);
+        glVertex2f(-w/2, h/2);
         glTexCoord2f(rightpct, bottompct);
-        glVertex2f(w, h);
+        glVertex2f(w/2, h/2);
         glTexCoord2f(rightpct, toppct);
-        glVertex2f(w, 0);
+        glVertex2f(w/2, -h/2);
+        // glTexCoord2f(leftpct, toppct);
+        // glVertex2f(0, 0);
+        // glTexCoord2f(leftpct, bottompct);
+        // glVertex2f(0, h);
+        // glTexCoord2f(rightpct, bottompct);
+        // glVertex2f(w, h);
+        // glTexCoord2f(rightpct, toppct);
+        // glVertex2f(w, 0);
     }
     glEnd();
 

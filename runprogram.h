@@ -31,6 +31,6 @@ struct Lines
 
 
 vector<string> readProgram(std::string filename);
-void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel);
+void exec(vector<vector<RPNToken> > &RPNProgram, VarTable &vartabel); 
 
 #endif // RUNPROGRAM_H

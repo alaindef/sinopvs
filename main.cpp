@@ -42,7 +42,8 @@ int main(int argc, char *argv[])
     // read and print the source program
     // auto src = readProgram("source3.sin");       // source2 and source3 moving png's
     // auto src = readProgram("source-meters-only.sin"); // only metering altitude and ticks
-    auto src = readProgram("source240623.sin"); 
+    // auto src = readProgram("source240623.sin"); 
+    auto src = readProgram("source240626.sin"); 
     // auto src = readProgram("sourceTest.sin");
     // auto src = readProgram("sourceifthen.sin");
     // auto src = readProgram("sourcewhile.sin");

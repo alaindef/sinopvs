@@ -1,0 +1,54 @@
+#choose position of altitude instrument
+xp = 128
+yp = 312
+
+#create altitude instrument 
+pushm()
+trnsm(xp,yp)
+drawm(3, 0, 0, 128, 128)
+popm()
+
+#put moving needle - on compass  
+pushm()
+pos =  Altitude
+shft = 64
+trnsm(xp, yp)
+rotm(pos,0,0,1)
+#drawm(4, 0, 0, 4, 64)
+drawm(4, 0, 0, 128, 128)
+popm()
+
+#create a X-Y carthesian cross
+xp = 128
+yp = 128
+pushm()
+trnsm(xp,yp)
+drawm(6, 0, 0, 128, 128)
+popm()
+
+#put a moving needle - on carthesian
+pushm()
+needlepos =  PitchAngle*10
+trnsm(xp,yp)
+rotm(needlepos,0,0,1)
+drawm(4, 0, 0, 128, 128)
+popm()
+
+#choose position of heading instrument
+xh = 512
+yh = 312
+#create dial 3
+pushm()
+trnsm(xh, yh)
+drawm(7, 0, 0, 128, 128)
+popm()
+
+#put moving needle - on compass  
+pushm()
+pos =  Heading
+trnsm(xh, yh)
+rotm(pos,0,0,1)
+drawm(8, 0, 0, 128, 128)
+popm()
+
+endp

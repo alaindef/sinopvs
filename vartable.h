@@ -41,12 +41,18 @@ struct VarTable
 
     // I think png's should be 128x128 pixels
 
-    string pings[7] = {"adfscrambled-128.png", "spriteTest.png", "nin.png", "adfscrambled-256.png", "needle.png",
-                       "G1000_1_scale_rotating-128.png", "carthesius-128.png"};
+    // string pings[7] = {"adfscrambled-128.png", "spriteTest.png", "nin.png", "adfscrambled-256.png", "needle.png",
+    //                    "G1000_1_scale_rotating-128.png", "carthesius-128.png"};
 
-    CTexture tex[7];
+    // CTexture tex[7];
+
+    string pings[9] = {"adfscrambled-128.png", "spriteTest.png", "nin.png", "alt_HM.png", "alt_GA_dig-2.png", 
+                       "G1000_1_scale_rotating-128.png", "carthesius-128.png", "VOR_1-3-convert.png", "VOR_1-1-convert.png"};
+                       // for the warnings on VOR pngs, see https://stackoverflow.com/questions/22745076/libpng-warning-iccp-known-incorrect-srgb-profile
+
+    CTexture tex[9];
 
     bool gUseXPData;
 };
-
+ 
 #endif // VARTABLE_H

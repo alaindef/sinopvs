@@ -22,39 +22,37 @@ int VarTable::getIndex(string name)
 
 float VarTable::getValue(int index)
 {
-    int fsVars = 6;                             // variables with VarTable index lower than this come from gFlightSimulator
+    int fsVars = 6; // variables with VarTable index lower than this come from gFlightSimulator
     float val;
-    if (index < fsVars)
-    {
-        if (gUseXPData)
-            switch (index)
-            {
-            case 0:
-                val = gFSData.GetAltitude();
-                break;
-            case 1:
-                val = gFSData.GetBankAngle();
-                break;
-            case 2:
-                val = gFSData.GetPitchangle();
-                break;
-            case 3:
-                val = gFSData.GetHeading();
-                break;
-            case 4:
-                val = gFSData.GetRollrate();
-                break;
-            case 5:
-                val = gFSData.GetGroundspeed();
-                break;
-            default: break;
-            }
-        else
-            val = *gFlightSimulator.GetAddressOfNamedVariableFloat(vartab[index].name);
-    }
+    if (gUseXPData)
+        switch (index)
+        {
+        case 0:
+            val = gFSData.GetAltitude();
+            break;
+        case 1:
+            val = gFSData.GetBankAngle();
+            break;
+        case 2:
+            val = gFSData.GetPitchangle();
+            break;
+        case 3:
+            val = gFSData.GetHeading();
+            break;
+        case 4:
+            val = gFSData.GetRollrate();
+            break;
+        case 5:
+            val = gFSData.GetGroundspeed();
+            break;
+        default:
+            val = vartab[index].value;
+            break;
+        }
+    else if (index < fsVars)
+        val = *gFlightSimulator.GetAddressOfNamedVariableFloat(vartab[index].name);
     else
         val = vartab[index].value;
-
     return val;
 }
 
