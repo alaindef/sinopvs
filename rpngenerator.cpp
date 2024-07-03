@@ -252,6 +252,7 @@ int params(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 
 void expr14_cmd(Token &tk, TkList &tkList, vector<RPNToken> &tokensout)
 {
+    // add comment to explain !!
     Token save = tkList.get(-1);             // save the command (our cursor points to the next token!)
     tk = nextToken(tkList);
     int arity = 0;

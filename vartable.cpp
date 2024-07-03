@@ -1,5 +1,7 @@
 #include "vartable.h"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 
 #include "FlightSimulator.h"
 #include "FSData.h"
@@ -78,12 +80,13 @@ void VarTable::printVarTable()
 {
     cout << "var:   ";
     for (const auto &element : vartab)
-        cout << element.name.substr(0, 4) << "\t";
+        cout  << fixed << setprecision(2) << setw(7) << element.name.substr(0, 6);
+        // cout << element.name.substr(0, 4) << "\t\t";
     cout << "\nvar:   ";
     for (const auto &element : vartab)
     {
-        printf("%.2f\t", element.value);
-        // cout << element.value << "\t";
+        // printf("%.2f\t", element.value);
+        cout << fixed << setprecision(2) << setw(7) <<  element.value;
     }
     cout << endl;
 }

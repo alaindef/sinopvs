@@ -7,12 +7,13 @@
 #include <vector>
 #include <map>
 
-enum class OC
-{
+enum class OC {
     NUM,
     VAR,
+    STR,
     MUL,
     DIV,
+    REM,
     ADD,
     SUB,
     PAS,
@@ -30,6 +31,7 @@ enum class OC
     PAR_L,
     PAR_R,
     COMMA,
+    USE,
 
     FIRSTFUN,
     getms,
@@ -47,26 +49,31 @@ enum class OC
     endp,
     NIL,
 };
-// pretty print opcodes
-const std::string ppOC[35] = {"NUM  ", "VAR  ", "MUL  ", "DIV  ", "ADD  ", "SUB  ", "PAS  ", "CHS  ", "LT   ", "LE   ",
-                              "GT   ", "GE   ", "EQ   ", "NE   ", "ASS  ", "QU   ", "COL  ", "PAR_L", "PAR_R", "COMMA",
-                              "FIRST", "getms", "pushm", "popm ", "trnsm", "rotm ", "drawm", "alti ",
-                              "IF   ", "ELSE ", "FI   ", "WHILE", "elihWq", "Finito", "NIL  "};
 
-struct Token
-{
+// pretty print opcodes
+const std::string ppOC[43] = {
+    "NUM  ", "VAR  ", "STR  ", "MUL  ", "DIV  ", "REM  ", "ADD  ", "SUB  ", "PAS  ", "CHS  ",
+    "LT   ", "LE   ", "GT   ", "GE   ", "EQ   ", "NE   ", "ASS  ", "QU   ", "COL  ", "PAR_L",
+    "PAR_R", "COMMA", "USE  ", "FIRST", "getms", "pushm", "popm ", "trnsm", "rotm ", "drawm",
+    "alti ", "IF   ", "ELSE ", "FI   ", "WHILE", "elihWq", "Finito", "NIL  "
+};
+
+struct Token {
     OC opcode;
     int arity;
     int precedence;
     float value;
+    string description;
 };
 
 const map<std::string, Token> keywords = {
     // symbol {opcode, arity, precedence, value}
     {"NUM", {OC::NUM, 0, 0, 0}},
     {"VAR", {OC::VAR, 0, 0, 0}},
+    {"STR", {OC::STR, 0, 0, 0}},
     {"*", {OC::MUL, 2, 3, 0}},
     {"/", {OC::DIV, 2, 3, 0}},
+    {"REM", {OC::REM, 2, 3, 0}},
     {"+", {OC::ADD, 2, 4, 0}},
     {"-", {OC::SUB, 2, 4, 0}},
     {"<", {OC::LT, 2, 6, 0}},
@@ -82,6 +89,7 @@ const map<std::string, Token> keywords = {
     {"(", {OC::PAR_L, -1, -1, 0}},
     {")", {OC::PAR_R, -1, -1, 0}},
     {",", {OC::COMMA, -1, -1, 0}},
+    {"USE", {OC::USE, 2, -1, 0}},
     {"FIRSTFUN", {OC::FIRSTFUN, 0, 0, 0}},
     {"getms", {OC::getms, 0, 0, 0}},
     {"pushm", {OC::pushm, 0, 0, 0}},
@@ -96,7 +104,8 @@ const map<std::string, Token> keywords = {
     {"while", {OC::qWhile, 0, 0, 15}},
     {"elihw", {OC::elihWq, 0, 0, 15}},
     {"endp", {OC::endp, 0, 0, 15}},
-    {"NIL", {OC::NIL, -1, 0, 0}}};
+    {"NIL", {OC::NIL, -1, 0, 0}}
+};
 
 string pp(Token &token, map<std::string, Token> &keys);
 

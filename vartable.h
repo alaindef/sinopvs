@@ -19,9 +19,7 @@ struct VarTable
                                {"PitchAngle", 0},
                                {"Heading", 0},
                                {"RollRate", 0},
-                               {"GroundSpeed", 0},
-                               {"a", -10},
-                               {"b", 10}};
+                               {"GroundSpeed", 0}};
 
     int getIndex(string name);
     // look for name in the table and return the storage index
@@ -40,12 +38,11 @@ struct VarTable
     void printVarTable();
 
     // I think png's should be 128x128 pixels
+    vector<string> pings = {"adfscrambled-128.png", "spriteTest.png", "nin.png", "alt_HM.png", "needle.png",
+    "G1000_1_scale_rotating-128.png", "carthesius-128.png", "VOR_1-3-convert.png", "VOR_1-1-convert.png", "needle-small.png"};
+    // for the warnings on VOR pngs, see https://stackoverflow.com/questions/22745076/libpng-warning-iccp-known-incorrect-srgb-profile
 
-    string pings[9] = {"pings/adfscrambled-128.png", "pings/spriteTest.png", "pings/nin.png", "pings/alt_HM.png", "pings/alt_GA_dig-2.png", 
-                       "pings/G1000_1_scale_rotating-128.png", "pings/carthesius-128.png", "pings/VOR_1-3-convert.png", "pings/VOR_1-1-convert.png"};
-                       // for the warnings on VOR pngs, see https://stackoverflow.com/questions/22745076/libpng-warning-iccp-known-incorrect-srgb-profile
-
-    CTexture tex[9];
+    vector<CTexture> tex;
 
     bool gUseXPData;
 };

@@ -1,23 +1,30 @@
+USE 'needle.png : needle
 #choose position of altitude instrument
 xp = 128
 yp = 312
 
+iAlt = 3
 #create altitude instrument 
 pushm()
 trnsm(xp,yp)
-drawm(3, 0, 0, 128, 128)
+drawm(iAlt, 0, 0, 128, 128)
 popm()
 
-#put moving needle - on compass  
+#put small needle - on altitude
 pushm()
-pos =  Altitude
-shft = 64
+pos =  Altitude * 360 /10000
 trnsm(xp, yp)
 rotm(pos,0,0,1)
-#drawm(4, 0, 0, 4, 64)
-drawm(4, 0, 0, 128, 128)
+drawm(9, 0, 0, 128, 128)
 popm()
 
+#put large needle - on altitude
+pushm
+pos =  (Altitude REM 1000) * 0.36
+trnsm(xp, yp)
+rotm(pos,0,0,1)
+drawm(4, 0, 0, 128, 128)
+popm()
 #create a X-Y carthesian cross
 xp = 128
 yp = 128
@@ -52,3 +59,4 @@ drawm(8, 0, 0, 128, 128)
 popm()
 
 endp
+

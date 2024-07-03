@@ -7,6 +7,8 @@
 
 using namespace std;
 
+extern string pingDir;
+
 string pp(Token &token, const map<std::string, Token> &keys)
 {
     for (auto entry = keys.rbegin(); entry != keys.rend(); ++entry)
@@ -75,11 +77,33 @@ void storeValueOrIndex(string param,
         token.value = stof(param);
         token.opcode = OC::NUM;
     }
+    else if (param[0] == "'"[0])
+    {
+        token.value = 111111;
+        token.opcode = OC::STR;
+        token.description = param.erase(0,1);
+    }
     else
     {
         token.value = vartabel.getIndex(param);
         token.opcode = OC::VAR;
     }
+}
+
+void storePng(vector<Token> &tokens, VarTable &vartabel) {
+    if (tokens[1].opcode != OC::USE) {
+        cout << "disater in storePng" << endl;
+        return;
+    }
+    string png0 = tokens[2].description.erase(0,1);
+
+    CTexture texi = {};
+    string png = pingDir;
+    png = png.append(png0);
+    png_to_gl_texture(&texi, (png).c_str());
+    vartabel.tex.push_back(texi);
+    int lastTexIndex = vartabel.tex.size();
+    vartabel.setVar(tokens[4].value, lastTexIndex);
 }
 
 vector<Token> makeTokenList(string textIn,
@@ -143,6 +167,8 @@ vector<Token> makeTokenList(string textIn,
     out += "\t{";
     out += "ETX";
     out += "} ";
+
+    if (tokens[1].opcode == OC::USE) storePng(tokens, vartabel);
 
     printtokengenerator(tokens, vartabel, out, report); // does nothing if report != 0
 

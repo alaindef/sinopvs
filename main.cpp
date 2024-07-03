@@ -1,3 +1,6 @@
+// notes
+//  ${workspaceFolder} the path of the workspace folder that contains the tasks.json file
+
 #ifdef __APPLE__
 #else
 #include <GL/gl.h>
@@ -23,11 +26,14 @@ using namespace std;
 CFlightSimulator gFlightSimulator;
 
 void InitFunction();
+void createProgram();
 void Renderfunction();
 void dialog();
 
 static int reportlevel = 0; // >0 means that tokengen and RPNgen output will be printed
 // provisional globals
+string scriptDir = "../scripts/";
+string pingDir   = "../pings/";
 unsigned printResult = 0;
 unsigned printVarTable = 0;
 VarTable VARIABLES;
@@ -37,36 +43,42 @@ vector<vector<RPNToken> > RPNList;
 
 CFSData gFSData;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     // read and print the source program
-    // auto src = readProgram("source3.sin");       // source2 and source3 moving png's
-    // auto src = readProgram("source-meters-only.sin"); // only metering altitude and ticks
-    // auto src = readProgram("source240623.sin"); 
-    auto src = readProgram("source240626.sin"); 
-    // auto src = readProgram("sourceTest.sin");
-    // auto src = readProgram("sourceifthen.sin");
-    // auto src = readProgram("sourcewhile.sin");
+    string name;
+    name = scriptDir + "source240702.sin";
+    // name = scriptDir + "source240623.sin";
+    // name = scriptDir + "sourceTest.sin";
+    // name = scriptDir + "source3.sin";
+    // name = scriptDir + "source-meters-only.sin";
+    // name = scriptDir + "sourceifthen.sin";
+    // name = scriptDir + "sourcewhile.sin";
+    if (access(name.c_str(), F_OK) != -1) cout << "script file good" << endl;
+    else {
+        cout << "script file bad" << endl;
+        return 0;
+    }
+    auto src = readProgram(name);
 
-    // generate the program as a vector of RPN tokenlists
-    VARIABLES.printVarTable();
-    for (int i = 0; i < src.size(); i++)
-    {
-        if (src[i][0] == '#')
-            continue;
-        tokenList = makeTokenList(src[i], keywords, VARIABLES, reportlevel);
-        RPNList.push_back(makeRPN(tokenList, reportlevel));
-    };
-
-    // exec(RPNList, VARIABLES);
-
-    // return 0;
+    thread dialogThread(dialog);
 
     gFSData.InitData();
     gFSData.CreateSocket();
 
-    thread dialogThread(dialog);
-
+    // generate the program as a vector of RPN tokenlists
+    // VARIABLES.printVarTable();
+    for (int i = 0; i < src.size(); i++) {
+        if (src[i][0] == '#')
+            continue;
+        tokenList = makeTokenList(src[i], keywords, VARIABLES, reportlevel);
+        if (tokenList[1].opcode == OC::USE) {
+            cout << "USE FOUND !!" << endl;
+            continue;
+        }
+        tokensRPN = makeRPN(tokenList, reportlevel);
+        // VARIABLES.printVarTable();
+        RPNList.push_back(makeRPN(tokenList, reportlevel)); // comment out if testing only tokens
+    };
     if (printResult + printVarTable == 0)
         CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction); // no rendering when testing
 
@@ -75,29 +87,29 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
-void InitFunction()
-{
-    // this has to occur after inti of openGL, so cannot be in vartable.h
-    int pingsSize = sizeof(VARIABLES.pings) / sizeof(VARIABLES.pings[0]);
-    int texSize = sizeof(VARIABLES.tex) / sizeof(VARIABLES.tex[0]);
-    if (pingsSize != texSize)
-        cout << "ERROR: pings and text have different sizes" << endl;
-    for (int i = 0; i < pingsSize ; i++)
-        png_to_gl_texture(&VARIABLES.tex[i], (VARIABLES.pings[i]).c_str());
+
+void InitFunction() {
+    // this has to occur after init of openGL, so cannot be in vartable.h
+    // int pingsSize = sizeof(VARIABLES.pings) / sizeof(VARIABLES.pings[0]);
+    CTexture texi = {};
+    for (auto &element: VARIABLES.pings) {
+        string png = pingDir;
+        png = png.append(element);
+        cout << "InitFunction: png = " << png << endl;
+        png_to_gl_texture(&texi, (png).c_str());
+        VARIABLES.tex.push_back(texi);
+    }
 }
 
-void Renderfunction()
-{
+void Renderfunction() {
+    // cout << "alti = " << VARIABLES.getValue(0) << endl;
     exec(RPNList, VARIABLES);
-    // cout << "Flap: " << *gFlightSimulator.GetAddressOfNamedVariableFloat("FlapPosition") << endl;
 }
 
-void dialog()
-{
+void dialog() {
     string ch = "";
     long unsigned int choice = 0;
-    while (true)
-    {
+    while (true) {
         cout << "\nchoice (1 to switch data source, 0 to exit) ==> ";
         cin >> ch;
         cin.ignore();
@@ -106,28 +118,25 @@ void dialog()
         {
             choice = stoi(ch);
             cout << "choice = " << choice << endl;
-            switch (choice)
-            {
-            case 0:
-                gFSData.CloseSocket();
-                glutLeaveMainLoop();
-                return;
-            case 1:
-                VARIABLES.gUseXPData = 1 - (VARIABLES.gUseXPData > 0);
-                cout << "we will switch to the other data source " << VARIABLES.gUseXPData << endl;
+            switch (choice) {
+                case 0:
+                    gFSData.CloseSocket();
+                    glutLeaveMainLoop();
+                    return;
+                case 1:
+                    VARIABLES.gUseXPData = 1 - (VARIABLES.gUseXPData > 0);
+                    cout << "we will switch to the other data source " << VARIABLES.gUseXPData << endl;
 
-                break;
-            default:
-                cout << "you typed another interesting number. go on!" << endl;
-                break;
+                    break;
+                default:
+                    cout << "you typed another interesting number. go on!" << endl;
+                    break;
             }
-        }
-        else if (ch == "r") // not used. reportLevel not propagated or so
+        } else if (ch == "r") // not used. reportLevel not propagated or so
         {
             reportlevel = 1 - (reportlevel > 0);
             cout << "reportlevel now is " << reportlevel << endl;
-        }
-        else
+        } else
             cout << "no  number. retry" << endl;
     }
 };

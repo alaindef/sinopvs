@@ -10,6 +10,7 @@
 #include <png.h>
 #include "Texture.h"
 #include "RenderMath.h"
+#include <cmath>
 
 extern CFlightSimulator gFlightSimulator;
 
@@ -27,6 +28,7 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
     cursor = 0;
     int pnr; // param number
     int arit;
+    int lopctr = 0;
 
     Rect recta = {0, 0, 256, 196};
 
@@ -59,6 +61,10 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
             break;
         case OC::DIV:
             res = p[1] / p[2];
+            stack.push_back(res);
+            break;
+        case OC::REM:
+            res = p[1] - std::floor(p[1] / p[2]) * p[2];
             stack.push_back(res);
             break;
         case OC::ADD:
