@@ -38,8 +38,8 @@ struct VarTable
     void printVarTable();
 
     // I think png's should be 128x128 pixels
-    vector<string> pings = {"adfscrambled-128.png", "spriteTest.png", "nin.png", "alt_HM.png", "needle.png",
-    "G1000_1_scale_rotating-128.png", "carthesius-128.png", "VOR_1-3-convert.png", "VOR_1-1-convert.png", "needle-small.png"};
+    vector<string> pings = {"adfscrambled128.png", "spriteTest.png", "nin.png", "alt_HM.png", "needle.png",
+    "G1000_1_scale_rotating128.png", "carthesius128.png", "VOR_13convert.png", "VOR_11convert.png", "needlesmall.png"};
     // for the warnings on VOR pngs, see https://stackoverflow.com/questions/22745076/libpng-warning-iccp-known-incorrect-srgb-profile
 
     vector<CTexture> tex;

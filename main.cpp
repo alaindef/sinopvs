@@ -25,13 +25,15 @@
 using namespace std;
 CFlightSimulator gFlightSimulator;
 
-void InitFunction();
+void InitFunction(std::vector<std::string>);
 void createProgram();
 void Renderfunction();
 void dialog();
 
 static int reportlevel = 0; // >0 means that tokengen and RPNgen output will be printed
 // provisional globals
+// string scriptDir = "scripts/";
+// string pingDir   = "pings/";
 string scriptDir = "../scripts/";
 string pingDir   = "../pings/";
 unsigned printResult = 0;
@@ -58,6 +60,7 @@ int main(int argc, char *argv[]) {
         cout << "script file bad" << endl;
         return 0;
     }
+
     auto src = readProgram(name);
 
     thread dialogThread(dialog);
@@ -67,20 +70,11 @@ int main(int argc, char *argv[]) {
 
     // generate the program as a vector of RPN tokenlists
     // VARIABLES.printVarTable();
-    for (int i = 0; i < src.size(); i++) {
-        if (src[i][0] == '#')
-            continue;
-        tokenList = makeTokenList(src[i], keywords, VARIABLES, reportlevel);
-        if (tokenList[1].opcode == OC::USE) {
-            cout << "USE FOUND !!" << endl;
-            continue;
-        }
-        tokensRPN = makeRPN(tokenList, reportlevel);
-        // VARIABLES.printVarTable();
-        RPNList.push_back(makeRPN(tokenList, reportlevel)); // comment out if testing only tokens
-    };
     if (printResult + printVarTable == 0)
-        CRenderer::InitSetStart(argc, argv, InitFunction, Renderfunction); // no rendering when testing
+        CRenderer::InitSetStart(argc, argv,
+            InitFunction,
+            src,
+            Renderfunction); // no rendering when testing
 
     dialogThread.join();
 
@@ -88,17 +82,30 @@ int main(int argc, char *argv[]) {
 }
 
 
-void InitFunction() {
+void InitFunction(vector<string> script) {
     // this has to occur after init of openGL, so cannot be in vartable.h
     // int pingsSize = sizeof(VARIABLES.pings) / sizeof(VARIABLES.pings[0]);
-    CTexture texi = {};
-    for (auto &element: VARIABLES.pings) {
-        string png = pingDir;
-        png = png.append(element);
-        cout << "InitFunction: png = " << png << endl;
-        png_to_gl_texture(&texi, (png).c_str());
-        VARIABLES.tex.push_back(texi);
+    for (int i = 0; i < script.size(); i++) {
+        if (script[i][0] == '#')
+            continue;
+        tokenList = makeTokenList(script[i], keywords, VARIABLES, reportlevel);
+        if (tokenList[1].opcode == OC::USE) {
+            cout << "USE FOUND !!" << endl;
+            continue;
+        }
+        tokensRPN = makeRPN(tokenList, reportlevel);
+        // VARIABLES.printVarTable();
+        RPNList.push_back(makeRPN(tokenList, reportlevel)); // comment out if testing only tokens
     }
+
+    CTexture texi = {};
+    // for (auto &element: VARIABLES.pings) {
+        // string png = pingDir;
+        // png = png.append(element);
+        // cout << "InitFunction: png = " << png << endl;
+        // png_to_gl_texture(&texi, (png).c_str());
+        // VARIABLES.tex.push_back(texi);
+    // }
 }
 
 void Renderfunction() {

@@ -1,36 +1,42 @@
 USE 'needle.png : needle
+USE 'needlesmall.png : needleSmall
+USE 'alt_HM.png : iAlt
+USE 'carthesius128.png : carthesian
+USE 'VOR_13convert.png : heading
+USE 'VOR_11convert.png : rotating_compass
+USE 'adfscrambled128.png : adf
 #choose position of altitude instrument
-xp = 128
-yp = 312
+x = 128
+y = 312
 
-iAlt = 3
 #create altitude instrument 
 pushm()
-trnsm(xp,yp)
+trnsm(x,y)
 drawm(iAlt, 0, 0, 128, 128)
 popm()
 
 #put small needle - on altitude
 pushm()
 pos =  Altitude * 360 /10000
-trnsm(xp, yp)
+trnsm(x, y)
 rotm(pos,0,0,1)
-drawm(9, 0, 0, 128, 128)
+drawm(needleSmall, 0, 0, 128, 128)
 popm()
 
 #put large needle - on altitude
 pushm
 pos =  (Altitude REM 1000) * 0.36
-trnsm(xp, yp)
+trnsm(x, y)
 rotm(pos,0,0,1)
-drawm(4, 0, 0, 128, 128)
+drawm(needle, 0, 0, 128, 128)
 popm()
+
 #create a X-Y carthesian cross
 xp = 128
 yp = 128
 pushm()
 trnsm(xp,yp)
-drawm(6, 0, 0, 128, 128)
+drawm(carthesian, 0, 0, 128, 128)
 popm()
 
 #put a moving needle - on carthesian
@@ -38,7 +44,7 @@ pushm()
 needlepos =  PitchAngle*10
 trnsm(xp,yp)
 rotm(needlepos,0,0,1)
-drawm(4, 0, 0, 128, 128)
+drawm(needle, 0, 0, 128, 128)
 popm()
 
 #choose position of heading instrument
@@ -47,7 +53,7 @@ yh = 312
 #create dial 3
 pushm()
 trnsm(xh, yh)
-drawm(7, 0, 0, 128, 128)
+drawm(heading, 0, 0, 128, 128)
 popm()
 
 #put moving needle - on compass  
@@ -55,7 +61,15 @@ pushm()
 pos =  Heading
 trnsm(xh, yh)
 rotm(pos,0,0,1)
-drawm(8, 0, 0, 128, 128)
+drawm(rotating_compass, 0, 0, 128, 128)
+popm()
+
+#put adf
+x = 512
+y = 512
+pushm()
+trnsm(x, y)
+drawm(adf, 0, 0, 128, 128)
 popm()
 
 endp

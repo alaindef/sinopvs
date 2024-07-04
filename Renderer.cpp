@@ -150,10 +150,13 @@ void keyboard(unsigned char key, int x, int y)
     }
 }
 
-void CRenderer::InitSetStart(int argc, char *argv[], const std::function<void(void)> &init_f, const std::function<void(void)> &render_f)
+void CRenderer::InitSetStart(int argc, char *argv[],
+        const std::function<void(std::vector<std::string>)> &init_f,
+        const std::vector<std::string> &script,
+        const std::function<void(void)>& render_f)
 {
     Init(argc, argv);
-    init_f();
+    init_f(script);
 
     glutKeyboardFunc(keyboard); // does not stop dialog thread! enter "0" instead in terminal
     SetRenderFunction(render_f);

@@ -95,7 +95,7 @@ void storePng(vector<Token> &tokens, VarTable &vartabel) {
         cout << "disater in storePng" << endl;
         return;
     }
-    string png0 = tokens[2].description.erase(0,1);
+    string png0 = tokens[2].description;
 
     CTexture texi = {};
     string png = pingDir;
@@ -103,6 +103,7 @@ void storePng(vector<Token> &tokens, VarTable &vartabel) {
     png_to_gl_texture(&texi, (png).c_str());
     vartabel.tex.push_back(texi);
     int lastTexIndex = vartabel.tex.size();
+    lastTexIndex--;
     vartabel.setVar(tokens[4].value, lastTexIndex);
 }
 
