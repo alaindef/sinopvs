@@ -84,28 +84,18 @@ int main(int argc, char *argv[]) {
 
 void InitFunction(vector<string> script) {
     // this has to occur after init of openGL, so cannot be in vartable.h
-    // int pingsSize = sizeof(VARIABLES.pings) / sizeof(VARIABLES.pings[0]);
     for (int i = 0; i < script.size(); i++) {
         if (script[i][0] == '#')
             continue;
         tokenList = makeTokenList(script[i], keywords, VARIABLES, reportlevel);
-        if (tokenList[1].opcode == OC::USE) {
-            cout << "USE FOUND !!" << endl;
-            continue;
-        }
+// skip USE statement. no RPN needed. makeTokenList handles png to texture
+        if (tokenList[1].opcode == OC::USE) continue;
         tokensRPN = makeRPN(tokenList, reportlevel);
         // VARIABLES.printVarTable();
         RPNList.push_back(makeRPN(tokenList, reportlevel)); // comment out if testing only tokens
     }
 
     CTexture texi = {};
-    // for (auto &element: VARIABLES.pings) {
-        // string png = pingDir;
-        // png = png.append(element);
-        // cout << "InitFunction: png = " << png << endl;
-        // png_to_gl_texture(&texi, (png).c_str());
-        // VARIABLES.tex.push_back(texi);
-    // }
 }
 
 void Renderfunction() {

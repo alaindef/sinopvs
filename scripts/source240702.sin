@@ -1,15 +1,16 @@
-USE 'needle.png : needle
-USE 'needlesmall.png : needleSmall
-USE 'alt_HM.png : iAlt
-USE 'carthesius128.png : carthesian
-USE 'VOR_13convert.png : heading
-USE 'VOR_11convert.png : rotating_compass
-USE 'adfscrambled128.png : adf
-#choose position of altitude instrument
+USE 'needle.png' : needle
+USE 'needlesmall.png'       : needleSmall
+USE 'alt_HM.png'            : iAlt
+USE 'carthesius128.png'     : carthesian
+USE 'VOR_13convert.png'     : heading
+USE 'VOR_11convert.png'     : rotating_compass
+USE 'VVI_2000_GA.png'       : vspng
+USE 'VVI_2000_GAred.png'   : vsredpng
+
+#create ALTITUDE instrument
+#choose position
 x = 128
 y = 312
-
-#create altitude instrument 
 pushm()
 trnsm(x,y)
 drawm(iAlt, 0, 0, 128, 128)
@@ -31,6 +32,8 @@ rotm(pos,0,0,1)
 drawm(needle, 0, 0, 128, 128)
 popm()
 
+
+#create PITCHANGLE instrument
 #create a X-Y carthesian cross
 xp = 128
 yp = 128
@@ -47,6 +50,43 @@ rotm(needlepos,0,0,1)
 drawm(needle, 0, 0, 128, 128)
 popm()
 
+
+#create VERTICALSPEED instrument
+#create a X-Y carthesian cross
+xp = 512
+yp = 128
+vs = VerticalSpeed
+pushm()
+trnsm(xp,yp)
+vsred = 500
+safe = 0
+ms = getms
+ms = ms % 1000
+if vs > -vsred
+    if vs < vsred
+        drawm(vspng, 0, 0, 128, 128)
+        safe = 1
+    fi
+fi
+if safe < 1
+    if ms < 500
+        drawm(vsredpng, 0, 0, 128, 128)
+    else
+        drawm(vspng, 0, 0, 128, 128)
+    fi
+
+fi
+popm()
+
+#put a moving needle
+pushm()
+needlepos =  270 + vs/20
+trnsm(xp,yp)
+rotm(needlepos,0,0,1)
+drawm(needle, 0, 0, 128, 128)
+popm()
+
+#create HEADING instrument
 #choose position of heading instrument
 xh = 512
 yh = 312
@@ -64,13 +104,6 @@ rotm(pos,0,0,1)
 drawm(rotating_compass, 0, 0, 128, 128)
 popm()
 
-#put adf
-x = 512
-y = 512
-pushm()
-trnsm(x, y)
-drawm(adf, 0, 0, 128, 128)
-popm()
 
 endp
 

@@ -13,6 +13,7 @@ enum class OC {
     STR,
     MUL,
     DIV,
+    MOD,
     REM,
     ADD,
     SUB,
@@ -52,10 +53,10 @@ enum class OC {
 
 // pretty print opcodes
 const std::string ppOC[43] = {
-    "NUM  ", "VAR  ", "STR  ", "MUL  ", "DIV  ", "REM  ", "ADD  ", "SUB  ", "PAS  ", "CHS  ",
-    "LT   ", "LE   ", "GT   ", "GE   ", "EQ   ", "NE   ", "ASS  ", "QU   ", "COL  ", "PAR_L",
-    "PAR_R", "COMMA", "USE  ", "FIRST", "getms", "pushm", "popm ", "trnsm", "rotm ", "drawm",
-    "alti ", "IF   ", "ELSE ", "FI   ", "WHILE", "elihWq", "Finito", "NIL  "
+    "NUM  ", "VAR  ", "STR  ", "MUL  ", "DIV  ", "MOD  ", "REM ", "ADD ", "SUB  ", "PAS ",
+    "CHS  ", "LT   ", "LE   ", "GT   ", "GE   ", "EQ   ", "NE  ", "ASS  ","QU   ", "COL  ",
+    "PAR_L", "PAR_R", "COMMA", "USE  ", "FIRST", "getms", "pushm","popm ","trnsm", "rotm ",
+    "drawm", "alti ", "IF   ", "ELSE ", "FI   ", "WHILE", "elihWq", "Finito", "NIL  "
 };
 
 struct Token {
@@ -72,6 +73,7 @@ const map<std::string, Token> keywords = {
     {"VAR", {OC::VAR, 0, 0, 0}},
     {"STR", {OC::STR, 0, 0, 0}},
     {"*", {OC::MUL, 2, 3, 0}},
+    {"%", {OC::MOD, 2, 3, 0}},
     {"/", {OC::DIV, 2, 3, 0}},
     {"REM", {OC::REM, 2, 3, 0}},
     {"+", {OC::ADD, 2, 4, 0}},

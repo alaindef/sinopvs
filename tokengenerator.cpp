@@ -79,9 +79,11 @@ void storeValueOrIndex(string param,
     }
     else if (param[0] == "'"[0])
     {
+        if (param.back() != "'"[0]) cout << "storeValueOr Index: string not closed " << endl;
         token.value = 111111;
         token.opcode = OC::STR;
-        token.description = param.erase(0,1);
+        token.description = param.substr(1, param.size()-2);
+        cout << "store png " << token.description << endl;
     }
     else
     {

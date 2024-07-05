@@ -19,7 +19,8 @@ struct VarTable
                                {"PitchAngle", 0},
                                {"Heading", 0},
                                {"RollRate", 0},
-                               {"GroundSpeed", 0}};
+                               {"GroundSpeed", 0},
+                               {"VerticalSpeed", 0}};
 
     int getIndex(string name);
     // look for name in the table and return the storage index
@@ -44,7 +45,7 @@ struct VarTable
 
     vector<CTexture> tex;
 
-    bool gUseXPData;
+    bool gUseXPData = true;
 };
  
 #endif // VARTABLE_H

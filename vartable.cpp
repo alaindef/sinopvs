@@ -9,8 +9,6 @@
 extern CFlightSimulator gFlightSimulator;
 extern CFSData gFSData;
 
-bool gUseXPData = true;
-
 using namespace std;
 
 int VarTable::getIndex(string name)
@@ -46,6 +44,9 @@ float VarTable::getValue(int index)
             break;
         case 5:
             val = gFSData.GetGroundspeed();
+            break;
+        case 6:
+            val = gFSData.GetVerticalspeed();
             break;
         default:
             val = vartab[index].value;

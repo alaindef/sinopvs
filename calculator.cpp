@@ -22,7 +22,7 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
     vector<float> stack;
 
     float res = 0;
-    float param[9];
+    int resin = 0;
     float p[10]; // parameters of an operator
 
     cursor = 0;
@@ -61,6 +61,11 @@ float calc(std::vector<RPNToken> &tokenlist, VarTable &vartabel, int &cursor)
             break;
         case OC::DIV:
             res = p[1] / p[2];
+            stack.push_back(res);
+            break;
+        case OC::MOD:
+            resin = (int)p[1] % (int)p[2];
+            res = (float)resin;
             stack.push_back(res);
             break;
         case OC::REM:
