@@ -9,19 +9,14 @@ USE 'VVI_2000_GAred.png'   : vsredpng
 
 #create ALTITUDE instrument
 #choose position
-x1 = 64
-x2 = 256
-y1 = x1
-y2 = x2
-x = x1
-y = y2
+x = 128
+y = 312
 pushm()
 trnsm(x,y)
 drawm(iAlt, 0, 0, 128, 128)
-popm()sudo ap
-4
+popm()
 
-#put small needle
+#put small needle - on altitude
 pushm()
 pos =  Altitude * 360 /10000
 trnsm(x, y)
@@ -29,7 +24,7 @@ rotm(pos,0,0,1)
 drawm(needleSmall, 0, 0, 128, 128)
 popm()
 
-#put large needle
+#put large needle - on altitude
 pushm
 pos =  (Altitude REM 1000) * 0.36
 trnsm(x, y)
@@ -39,15 +34,15 @@ popm()
 
 
 #create PITCHANGLE instrument
-#create the instrument
-xp = x1
-yp = y1
+#create a X-Y carthesian cross
+xp = 128
+yp = 128
 pushm()
 trnsm(xp,yp)
 drawm(carthesian, 0, 0, 128, 128)
 popm()
 
-#put a moving needle
+#put a moving needle - on carthesian
 pushm()
 needlepos =  PitchAngle*10
 trnsm(xp,yp)
@@ -58,24 +53,30 @@ popm()
 
 #create VERTICALSPEED instrument
 vs = VerticalSpeed
+vs = -200
 
 #create a blinker
 vsred = 500
+safe = 0
 ms = getms
 ms = ms % 1000
 if vs > -vsred
     if vs < vsred
         blinker = 0
-    else
-        blinker = ms > 500
+        safe = 1
     fi
-else
-    blinker = ms > 500
+fi
+if safe < 1
+    if ms < 500
+        blinker = 1
+    else
+        blinker = 0
+    fi
 fi
 
-#create the instrument
-xp = x2
-yp = y1
+#create a X-Y carthesian cross
+xp = 512
+yp = 128
 pushm()
 trnsm(xp,yp)
 if blinker
@@ -95,21 +96,22 @@ popm()
 
 #create HEADING instrument
 #choose position of heading instrument
-xh = x2
-yh = y2
+xh = 512
+yh = 312
 #create dial 3
 pushm()
 trnsm(xh, yh)
 drawm(heading, 0, 0, 128, 128)
 popm()
 
-#put rotating compass
+#put moving needle - on compass  
 pushm()
 pos =  Heading
 trnsm(xh, yh)
 rotm(pos,0,0,1)
 drawm(rotating_compass, 0, 0, 128, 128)
 popm()
+
 
 endp
 

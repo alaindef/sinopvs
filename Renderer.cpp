@@ -74,12 +74,14 @@ void CRenderer::Reshape(GLsizei width, GLsizei height)
     if (width >= height)
     {
         // aspect >= 1, set the height from -1 to 1, with larger width
-        gluOrtho2D(0, 1024, 768, 0); //-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
+        gluOrtho2D(0, 768, 512, 0); //-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
+        // gluOrtho2D(0, 1024, 768, 0); //-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
     }
     else
     {
         // aspect < 1, set the width to -1 to 1, with larger height
-        gluOrtho2D(0, 1024, 768, 0);
+        gluOrtho2D(0, 768, 512, 0);
+        // gluOrtho2D(0, 1024, 768, 0);
     }
 }
 
