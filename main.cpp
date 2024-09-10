@@ -34,8 +34,8 @@ static int reportlevel = 0; // >0 means that tokengen and RPNgen output will be 
 // provisional globals
 // string scriptDir = "scripts/";
 // string pingDir   = "pings/";
-string scriptDir = "../scripts/";
-string pingDir   = "../pings/";
+string scriptDir = "/home/alaindef/projects/vscode/sinop/scripts/";
+string pingDir   = "/home/alaindef/projects/vscode/sinop/pings/";
 unsigned printResult = 0;
 unsigned printVarTable = 0;
 VarTable VARIABLES;
@@ -46,6 +46,7 @@ vector<vector<RPNToken> > RPNList;
 CFSData gFSData;
 
 int main(int argc, char *argv[]) {
+    cout << "--------------------------------------- teut --------------------------------" << endl;
     // read and print the source program
     string name;
     name = scriptDir + "source240702.sin";
@@ -55,6 +56,7 @@ int main(int argc, char *argv[]) {
     // name = scriptDir + "source-meters-only.sin";
     // name = scriptDir + "sourceifthen.sin";
     // name = scriptDir + "sourcewhile.sin";
+    cout << "name is " << name << endl;
     if (access(name.c_str(), F_OK) != -1) cout << "script file good" << endl;
     else {
         cout << "script file bad" << endl;

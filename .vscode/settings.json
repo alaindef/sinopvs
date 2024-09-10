@@ -78,8 +78,7 @@
         "sstream": "cpp",
         "stdfloat": "cpp",
         "typeindex": "cpp",
-        "variant": "cpp",
-        "cerrno": "cpp"
+        "variant": "cpp"
     },
-    "C_Cpp.default.compilerPath": "/usr/bin/clang++"
+    "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }
