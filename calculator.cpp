@@ -1,14 +1,12 @@
-#include <iostream>
-#include <memory>
+
 #include "calculator.h"
 #include "FlightSimulator.h"
 #include <GL/gl.h>
-#include <GL/freeglut.h>
+#include <GLFW/glfw3.h>
 
 #include "helperfunctions.h"
 #include "Renderer.h"
 #include <png.h>
-#include "Texture.h"
 #include "RenderMath.h"
 #include <cmath>
 

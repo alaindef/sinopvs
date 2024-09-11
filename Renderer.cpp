@@ -1,9 +1,10 @@
 #include "Renderer.h"
-#include <GL/gl.h>
-#include <GL/freeglut.h>
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 #include <functional>
 #include "FSData.h"
 #include "FlightSimulator.h"
+#include <iostream>
 
 extern CFlightSimulator gFlightSimulator;
 extern CFSData gFSData;
@@ -13,13 +14,27 @@ std::function<void(void)> CRenderer::mRenderFunction = nullptr;
 
 void CRenderer::Init(int argc, char *argv[])
 {
-    glutInit(&argc, argv);                   // Initialize GLUT
-    glutCreateWindow("Sinop Script Tester"); // Create a window with the given title
-    glutInitWindowSize(1024, 768);           // Set the window's initial width & height
-    glutInitWindowPosition(50, 50);          // Position the window's initial top-left corner
-    glutDisplayFunc(CRenderer::Render);      // Register display callback handler for window re-paint
-    glutReshapeFunc(CRenderer::Reshape);
+    // glutInit(&argc, argv);                   // Initialize GLUT
+    // glutCreateWindow("Sinop Script Tester"); // Create a window with the given title
+    // glutInitWindowSize(1024, 768);           // Set the window's initial width & height
+    // glutInitWindowPosition(50, 50);          // Position the window's initial top-left corner
+    // glutDisplayFunc(CRenderer::Render);      // Register display callback handler for window re-paint
+    // glutReshapeFunc(CRenderer::Reshape);
 
+// gteut  https://chatgpt.com/c/66e099f4-73d8-800c-86d7-dd7b9ba0a52f
+    if (!glfwInit()) 
+        std::cout << "glfwinit failed" << std::endl;
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    CRenderer::scene = glfwCreateWindow(800, 600, "sinop glfw", NULL, NULL);
+    if (scene == NULL) {
+        glfwTerminate();
+        // return -1; inti shoud not return a value
+    }
+    glfwMakeContextCurrent(scene);
+    
     png_to_gl_texture(&mTexture, "spriteTest.png");
 }
 
@@ -55,7 +70,7 @@ void CRenderer::Render()
 
     glFlush(); // Render now
 
-    glutPostRedisplay();
+    // glutPostRedisplay();
 }
 
 void CRenderer::Reshape(GLsizei width, GLsizei height)
@@ -74,13 +89,18 @@ void CRenderer::Reshape(GLsizei width, GLsizei height)
     if (width >= height)
     {
         // aspect >= 1, set the height from -1 to 1, with larger width
-        gluOrtho2D(0, 768, 512, 0); //-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
-        // gluOrtho2D(0, 1024, 768, 0); //-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
+        // gluOrtho2D(0, 768, 512, 0); //-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
+        // gteut
+        // gluOrtho2D(0, 768, 512, 0); //-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
+        glOrtho(0, 1024, 768, 0, -1.0, -1.0);
     }
     else
     {
         // aspect < 1, set the width to -1 to 1, with larger height
-        gluOrtho2D(0, 768, 512, 0);
+        // gteut
+        // gluOrtho2D(0, 768, 512, 0);
+        glOrtho(0, 768, 512, 0, -1.0, -1.0);
+
         // gluOrtho2D(0, 1024, 768, 0);
     }
 }
@@ -143,14 +163,25 @@ void CRenderer::DrawImage(CTexture *tex, Rect *sourcerect, Color color)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void keyboard(unsigned char key, int x, int y)
+// gteut
+// void keyboard(unsigned char key, int x, int y)
+// {
+//     if (key == 'q' || key == 27)
+//     { // 'q' or Escape key
+//         gFSData.CloseSocket();
+//         glutLeaveMainLoop();
+//     }
+// }
+
+void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == 'q' || key == 27)
-    { // 'q' or Escape key
+     if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
         gFSData.CloseSocket();
-        glutLeaveMainLoop();
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 }
+
 
 void CRenderer::InitSetStart(int argc, char *argv[],
         const std::function<void(std::vector<std::string>)> &init_f,
@@ -160,7 +191,22 @@ void CRenderer::InitSetStart(int argc, char *argv[],
     Init(argc, argv);
     init_f(script);
 
-    glutKeyboardFunc(keyboard); // does not stop dialog thread! enter "0" instead in terminal
+// gteut
+    // glutKeyboardFunc(keyboard); // does not stop dialog thread! enter "0" instead in terminal
+    glfwSetKeyCallback(scene, keyboard);
+
+
     SetRenderFunction(render_f);
-    glutMainLoop();
+    // glutMainLoop();
+
+    // gteut
+    while (!glfwWindowShouldClose(scene)) {
+    // Render here
+
+    glfwSwapBuffers(scene);
+    glfwPollEvents();
+    }
+
+    glfwTerminate();
+
 }

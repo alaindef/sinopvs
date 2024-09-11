@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include <functional>
 #include <string>
+#include <GLFW/glfw3.h>
 
 class CRenderer
 {
@@ -20,6 +21,7 @@ class CRenderer
         const std::function<void(void)>& render_f);
 
     private:
+    static GLFWwindow * scene;
     static CTexture mTexture;
     static std::function<void(void)> mRenderFunction;
 };

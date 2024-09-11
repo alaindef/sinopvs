@@ -29,19 +29,21 @@ set(HEADERS
     runprogram.h
     FSData.h
     )
+set(OpenGL_GL_PREFERENCE GLVND)
 
 find_package(PNG REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(glfw3 REQUIRED)
 
 include_directories(${PNG_INCLUDE_DIR})
-include_directories(${OpenGL_INCLUDE_DIR})
+include_directories(${OpenGL_INCLUDE_DIR} ${GLFW_INCLUDE_DIRS})
 
 add_executable(sinop main.cpp ${SOURCES} ${HEADERS})
 target_link_libraries(sinop ${PNG_LIBRARY} ${OpenGL_LIBRARY})
 target_link_libraries(sinop
-    GL
-    GLU
-    glut
+    ${OPENGL_LIBRARIES}   # OpenGL library
+    glfw                  # GLFW library
+    ${GLFW_LIBRARIES}
 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

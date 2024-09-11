@@ -1,11 +1,8 @@
 // notes
 //  ${workspaceFolder} the path of the workspace folder that contains the tasks.json file
 
-#ifdef __APPLE__
-#else
-#include <GL/gl.h>
-#include <GL/freeglut.h>
-#endif
+
+#include <GLFW/glfw3.h>
 
 #include <iostream>
 #include <thread>
@@ -19,7 +16,6 @@
 #include "vartable.h"
 #include "tokengenerator.h"
 #include "rpngenerator.h"
-#include "calculator.h"
 #include "runprogram.h"
 
 using namespace std;
@@ -50,12 +46,6 @@ int main(int argc, char *argv[]) {
     // read and print the source program
     string name;
     name = scriptDir + "source240702.sin";
-    // name = scriptDir + "source240623.sin";
-    // name = scriptDir + "sourceTest.sin";
-    // name = scriptDir + "source3.sin";
-    // name = scriptDir + "source-meters-only.sin";
-    // name = scriptDir + "sourceifthen.sin";
-    // name = scriptDir + "sourcewhile.sin";
     cout << "name is " << name << endl;
     if (access(name.c_str(), F_OK) != -1) cout << "script file good" << endl;
     else {
@@ -120,7 +110,8 @@ void dialog() {
             switch (choice) {
                 case 0:
                     gFSData.CloseSocket();
-                    glutLeaveMainLoop();
+                    // gteut
+                    // glutLeaveMainLoop();
                     return;
                 case 1:
                     VARIABLES.gUseXPData = 1 - (VARIABLES.gUseXPData > 0);
