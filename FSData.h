@@ -9,14 +9,13 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include <vector>
+// #include <vector>
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <sys/types.h>
-//#include <unistd.h>
 
 #define UDPDATAPORT_PIDPLUGIN 9225
 #define UDPCOMMANDPORT_PIDPLUGIN 9226

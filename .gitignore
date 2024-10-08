@@ -7,7 +7,7 @@ files*.conf
 #build directories
 [Bb]uild*\
 [Bb]uild*/
-
+.cache*/
 
 # C++ objects and libs
 *.slo

@@ -1,5 +1,7 @@
 // notes
 //  ${workspaceFolder} the path of the workspace folder that contains the tasks.json file
+// 241003 PIDPlugin is in qtprojects/PIDPlugin. must be compiled to get PIDPlugin.xpl
+
 
 #ifdef __APPLE__
 #else
